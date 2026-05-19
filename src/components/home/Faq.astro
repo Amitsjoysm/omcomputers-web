@@ -1,0 +1,100 @@
+---
+const faqs = [
+  {
+    q: 'What devices do you repair?',
+    a: 'We repair laptops, desktops, and printers across all major brands: HP, Dell, Lenovo, ASUS, Acer, Apple, and more. We handle screen replacements, motherboard repairs, charging ports, keyboard issues, and software problems.',
+  },
+  {
+    q: 'Do you use genuine parts?',
+    a: 'Yes, always. Every repair uses genuine or OEM-certified parts. No grey-market or counterfeit components. This is why we can offer a 6-month warranty on all repairs.',
+  },
+  {
+    q: 'How long does a typical repair take?',
+    a: 'Most common repairs (screen replacement, keyboard replacement, OS reinstall) are completed same-day. Complex motherboard repairs or parts that need ordering are typically ready within 2 to 3 business days. We always give you a clear timeline upfront.',
+  },
+  {
+    q: 'Do you offer Annual Maintenance Contracts (AMC)?',
+    a: 'Yes. Our AMC plans cover scheduled maintenance visits, priority helpdesk support, software updates, and emergency on-site response. Ideal for offices with 5+ computers or CCTV systems. Call us for a custom quote.',
+  },
+  {
+    q: 'Can you install CCTV or biometric systems at our location?',
+    a: 'Absolutely. We handle everything from site survey and camera placement design to installation, DVR/NVR configuration, and remote viewing setup. For biometric systems, we include payroll software integration and staff training.',
+  },
+  {
+    q: 'Is there a charge for the diagnosis?',
+    a: 'The initial diagnosis is completely free with no obligation. We inspect your device, identify the issue, and give you a clear written quote before any work begins. You only pay if you choose to proceed.',
+  },
+];
+---
+
+<style>
+  .faq-section { padding: var(--sp-9) 0; }
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: box-shadow 200ms;
+  }
+  details[open] { box-shadow: var(--shadow-raise); }
+  details[open] summary { color: var(--primary); }
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: var(--sp-4) var(--sp-5);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    color: var(--text-primary);
+    transition: color 150ms;
+    font-family: var(--font-display);
+    -webkit-appearance: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: '+';
+    font-size: 20px;
+    font-weight: 300;
+    flex-shrink: 0;
+    color: var(--primary);
+    transition: transform 200ms;
+  }
+  details[open] summary::after { transform: rotate(45deg); }
+  .faq-answer {
+    padding: 0 var(--sp-5) var(--sp-4);
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  @media (max-width: 768px) {
+    .faq-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<section class="faq-section" aria-label="Frequently asked questions">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:var(--sp-5);" class="fade-up">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-grid fade-up">
+      {faqs.map(faq => (
+        <details>
+          <summary>{faq.q}</summary>
+          <div class="faq-answer">{faq.a}</div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

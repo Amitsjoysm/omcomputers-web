@@ -1,0 +1,125 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import PostCard from '../components/blog/PostCard.astro';
+import CopyLink from '../components/blog/CopyLink.tsx';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export interface Props {
+  title: string;
+  excerpt: string;
+  tags: string[];
+  publishDate: Date;
+  readTime: number;
+  coverImage?: ImageMetadata;
+  slug: string;
+}
+
+const { title, excerpt, tags, publishDate, readTime, coverImage, slug } = Astro.props;
+
+const allPosts = await getCollection('blog', ({ data }) => data.published);
+const related = allPosts
+  .filter(p => p.slug !== slug && p.data.tags.some(t => tags.includes(t)))
+  .slice(0, 3);
+const fallback = allPosts
+  .filter(p => p.slug !== slug)
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+const relatedPosts = related.length >= 3 ? related : fallback;
+
+const formattedDate = publishDate.toLocaleDateString('en-IN', {
+  day: 'numeric', month: 'long', year: 'numeric',
+});
+
+const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(title + ': ' + Astro.url.href)}`;
+---
+
+<BaseLayout title={title} description={excerpt}>
+  <style>
+    .post-hero { background: var(--surface-2); padding: var(--sp-6) 0; border-bottom: 1px solid var(--border); }
+    .breadcrumb { display: flex; align-items: center; gap: var(--sp-2); font-size: 13px; color: var(--text-muted); margin-bottom: var(--sp-4); flex-wrap: wrap; }
+    .breadcrumb a { color: var(--primary); }
+    .breadcrumb span { color: var(--text-muted); }
+    .post-meta { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; font-size: 13px; color: var(--text-secondary); margin: var(--sp-3) 0 var(--sp-4); }
+    .cover-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--radius-lg); margin: var(--sp-6) 0; border: 1px solid var(--border); }
+    .cover-placeholder { width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); background: linear-gradient(135deg, var(--primary-light), var(--border)); margin: var(--sp-6) 0; display: flex; align-items: center; justify-content: center; }
+    .author-chip { display: flex; align-items: center; gap: var(--sp-2); font-size: 14px; color: var(--text-secondary); margin: var(--sp-4) 0 var(--sp-6); }
+    .author-chip img { border-radius: 50%; border: 2px solid var(--border); }
+    .prose-wrap { max-width: 72ch; margin: 0 auto; }
+    .share-row { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; margin: var(--sp-7) 0 var(--sp-5); padding-top: var(--sp-5); border-top: 1px solid var(--border); }
+    .share-row span { font-weight: 600; font-size: 14px; color: var(--text-secondary); }
+    .share-btn { display: inline-flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-4); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; transition: opacity 150ms; border: 1px solid var(--border); }
+    .share-btn:hover { opacity: .8; }
+    .share-wa { background: #25D366; color: #fff; border-color: #25D366; }
+    .related-section { background: var(--surface-2); padding: var(--sp-8) 0; }
+    @media (max-width: 600px) {
+      .post-meta { gap: var(--sp-2); }
+    }
+  </style>
+
+  <Navbar />
+
+  <nav class="post-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>›</span>
+        <a href="/blog">Blog</a>
+        <span>›</span>
+        <span>{title}</span>
+      </div>
+
+      <div class="post-meta">
+        <span>📅 {formattedDate}</span>
+        <span>⏱ {readTime} min read</span>
+        {tags.map(tag => <span class="badge badge-primary">{tag}</span>)}
+      </div>
+
+      <h1 style="font-size:clamp(24px,4vw,40px); font-weight:800; line-height:1.2; max-width:800px;">{title}</h1>
+
+      <div class="author-chip">
+        <img src="/logo.png" alt="OM Computers" width="24" height="24" />
+        <span>OM Computers Team</span>
+      </div>
+    </div>
+  </nav>
+
+  <article style="padding: var(--sp-8) 0;">
+    <div class="container">
+      {coverImage
+        ? <img class="cover-img" src={coverImage.src} alt={title} width={coverImage.width} height={coverImage.height} />
+        : <div class="cover-placeholder"><span style="font-size:48px; opacity:.4;">📸</span></div>
+      }
+
+      <div class="prose-wrap">
+        <div class="prose-om">
+          <slot />
+        </div>
+
+        <div class="share-row">
+          <span>Share this post:</span>
+          <a href={whatsappUrl} target="_blank" rel="noopener" class="share-btn share-wa">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.109 1.533 5.83L.057 23.926a.5.5 0 0 0 .609.61l6.253-1.633A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.944 9.944 0 0 1-5.174-1.448l-.371-.22-3.844 1.005 1.027-3.742-.241-.385A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            WhatsApp
+          </a>
+          <CopyLink client:load url={Astro.url.href} />
+        </div>
+      </div>
+    </div>
+  </article>
+
+  {relatedPosts.length > 0 && (
+    <section class="related-section">
+      <div class="container">
+        <p class="eyebrow">More Articles</p>
+        <h2 class="section-title" style="font-size:28px;">Related Posts</h2>
+        <div class="grid-3">
+          {relatedPosts.map(post => <PostCard post={post} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Footer />
+</BaseLayout>

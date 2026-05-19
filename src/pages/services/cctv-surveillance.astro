@@ -1,0 +1,155 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+---
+
+<ServiceLayout
+  title="CCTV & Surveillance"
+  description="CCTV installation in Pune: HD, IP, DVR/NVR systems for homes and businesses. Full site survey, remote viewing setup, and AMC contracts at OM Computers."
+  eyebrow="Security Systems"
+  heading="CCTV & Surveillance Installation"
+  subheading="HD and IP camera systems for homes, shops, offices, and warehouses. We handle the survey, installation, and remote viewing setup from start to finish."
+  heroIcon="📡"
+  heroBg="#E8F5E9"
+>
+
+  <!-- What we offer -->
+  <section class="svc-section">
+    <div class="container">
+      <p class="eyebrow">What We Offer</p>
+      <h2 class="svc-h2">CCTV solutions for every space</h2>
+      <p class="svc-lead">From a single camera at the front door to a 64-channel NVR covering an entire campus.</p>
+      <div class="offer-grid">
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8F5E9;">🏠</div>
+          <h3 class="offer-title">Home CCTV</h3>
+          <p class="offer-desc">4 to 8 camera setups for homes and apartments. Indoor and outdoor, with IR night vision and mobile app viewing.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E3F2FD;">🏢</div>
+          <h3 class="offer-title">Office and Commercial</h3>
+          <p class="offer-desc">16 to 64 channel NVR systems for offices, showrooms, warehouses, and factories. Multiple user access levels.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#FFF3E0;">📷</div>
+          <h3 class="offer-title">IP Camera Systems</h3>
+          <p class="offer-desc">PoE IP cameras with 2MP to 8MP resolution. Ideal for large premises where long cable runs are needed.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#F3E5F5;">🌙</div>
+          <h3 class="offer-title">Night Vision and Low Light</h3>
+          <p class="offer-desc">IR cameras with up to 40m night vision range. Colour night-vision models available for areas with minimal ambient light.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8EAF6;">📱</div>
+          <h3 class="offer-title">Remote Viewing Setup</h3>
+          <p class="offer-desc">Watch your cameras from anywhere on your phone. We configure the mobile app, port forwarding, and remote access during installation.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E0F7FA;">🔧</div>
+          <h3 class="offer-title">AMC Contracts</h3>
+          <p class="offer-desc">Annual maintenance for existing CCTV systems. Includes periodic health checks, cleaning, and priority support for faults.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">Installation Process</p>
+      <h2 class="svc-h2" style="text-align:center;">How we install</h2>
+      <p class="svc-lead" style="text-align:center; margin-left:auto; margin-right:auto; margin-bottom:var(--sp-7);">Professional installation with neat cable management and full handover training.</p>
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4 class="step-title">Site Survey</h4>
+          <p class="step-desc">We visit your premises, identify blind spots, and recommend camera positions and count.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4 class="step-title">Quote</h4>
+          <p class="step-desc">Written quote with equipment list, labour cost, and timeline. No hidden charges.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4 class="step-title">Installation</h4>
+          <p class="step-desc">Cameras mounted, cables concealed, DVR/NVR configured, storage verified.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <h4 class="step-title">Handover</h4>
+          <p class="step-desc">We set up your mobile app, show you how to review footage, and leave you with a support number.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brands and specs -->
+  <section class="svc-section">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-8); align-items:start;">
+        <div>
+          <p class="eyebrow">Equipment</p>
+          <h2 class="svc-h2">Brands we work with</h2>
+          <p style="font-size:15px; color:var(--text-secondary); line-height:1.7; margin-bottom:var(--sp-4);">
+            We install and support cameras and recorders from leading brands. We recommend the right brand and model for your budget and coverage needs.
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-top:var(--sp-3);">
+            {['Hikvision', 'Dahua', 'CP Plus', 'Honeywell', 'Axis', 'Bosch', 'Samsung', 'Uniview'].map(b => (
+              <span style="padding:6px 14px; background:var(--surface-2); border:1px solid var(--border); border-radius:99px; font-size:13px; font-weight:600; color:var(--text-secondary);">{b}</span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p class="eyebrow">Specifications</p>
+          <h2 class="svc-h2">What we can install</h2>
+          {[
+            ['Resolution', '1MP (720p) to 8MP (4K)'],
+            ['Camera Types', 'Dome, Bullet, PTZ, Fisheye, Hidden'],
+            ['Recorder Types', 'DVR (analog), NVR (IP), Hybrid DVR'],
+            ['Storage', '1TB to 32TB HDD, up to 90 days'],
+            ['Viewing', 'Mobile app, web browser, monitor'],
+            ['Network', 'LAN, PoE, Wi-Fi cameras available'],
+          ].map(([label, value]) => (
+            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border);">
+              <span style="font-size:14px; color:var(--text-muted); font-weight:600;">{label}</span>
+              <span style="font-size:14px; color:var(--text-primary); text-align:right; max-width:55%;">{value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">FAQ</p>
+      <h2 class="svc-h2" style="text-align:center; margin-bottom:var(--sp-6);">Common questions</h2>
+      <div class="faq-list">
+        {[
+          ['How many cameras does my home or office need?', 'It depends on your layout. A typical 2BHK apartment needs 3 to 4 cameras. An office floor typically needs 6 to 12. We assess your space and recommend the minimum effective count.'],
+          ['Can I view cameras on my phone when I am away?', 'Yes. We configure remote viewing through a mobile app during installation. You can view live footage and recorded clips from anywhere.'],
+          ['How long is footage stored?', 'Storage depends on the hard drive size and camera resolution. A 2TB drive with 4 cameras at 1080p typically gives 15 to 30 days of recording. We help you choose the right storage for your retention requirement.'],
+          ['Do you service existing CCTV systems from other installers?', 'Yes. We service most brands. We assess the system first and give you an honest report on its condition.'],
+          ['Can you install cameras without drilling walls?', 'In some cases yes, using surface-mount brackets and trunking. We design the installation to suit your premises, including rented or heritage buildings.'],
+          ['What is included in an AMC contract?', 'Our AMC contracts include two annual visits for health checks and cleaning, priority fault response, and discounted spare parts.'],
+        ].map(([q, a]) => (
+          <div class="faq-item">
+            <p class="faq-q">{q}</p>
+            <p class="faq-a">{a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<style>
+  @media (max-width: 768px) {
+    section > .container > div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

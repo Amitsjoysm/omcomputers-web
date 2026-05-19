@@ -1,0 +1,122 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = 'OM Computers: Computer repair, CCTV, biometric, IT support, and digital services in Pune.',
+  ogImage = '/icons/og-image.jpg',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site || 'https://omcomputers.co');
+
+// Load site settings
+let siteSettings = {
+  phone: '+91 98765 43210',
+  email: 'info@omcomputers.co',
+  address: 'Pune, Maharashtra',
+};
+try {
+  const raw = await import('../content/settings/site.json');
+  siteSettings = raw.default as typeof siteSettings;
+} catch (_) {}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <title>{title} · OM Computers</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content={`${title} · OM Computers`} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image"       content={new URL(ogImage, Astro.site || 'https://omcomputers.co')} />
+  <meta property="og:url"         content={canonical} />
+  <meta name="twitter:card"       content="summary_large_image" />
+
+  <!-- Favicons -->
+  <link rel="icon" href="/icons/favicon-48x48.png" type="image/png" sizes="48x48" />
+  <link rel="icon" href="/icons/favicon-32x32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="/icons/favicon-16x16.png" type="image/png" sizes="16x16" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#1E88E5" />
+
+  <!-- Google Fonts preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="preload"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </noscript>
+  <meta name="robots" content="index, follow" />
+
+  <!-- JSON-LD LocalBusiness -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "OM Computers",
+    "url": "https://omcomputers.co",
+    "logo": "https://omcomputers.co/logo.png",
+    "telephone": siteSettings.phone,
+    "email": siteSettings.email,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": siteSettings.address,
+      "addressLocality": "Pune",
+      "addressRegion": "Maharashtra",
+      "addressCountry": "IN"
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      "opens": "09:00",
+      "closes": "19:00"
+    }
+  })} />
+</head>
+<body>
+  <a href="#main-content" class="skip-nav">Skip to main content</a>
+  <slot />
+
+  <!-- Scroll animation observer -->
+  <script is:inline>
+    (function () {
+      if (typeof IntersectionObserver === 'undefined') return;
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+        }),
+        { threshold: 0.15 }
+      );
+      document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+      // Re-observe after hydration
+      const mo = new MutationObserver(() => {
+        document.querySelectorAll('.fade-up:not(.visible)').forEach(el => observer.observe(el));
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    })();
+  </script>
+</body>
+</html>

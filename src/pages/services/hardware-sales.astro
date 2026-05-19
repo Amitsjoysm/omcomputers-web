@@ -1,0 +1,143 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+---
+
+<ServiceLayout
+  title="Hardware Sales & Upgrades"
+  description="Computer hardware sales and upgrades in Pune. RAM, SSD, processors, graphics cards, and accessories from top brands. Installation included at OM Computers."
+  eyebrow="Hardware Sales"
+  heading="Hardware Sales & Upgrades"
+  subheading="Genuine RAM, SSD, processors, graphics cards, and accessories for your laptop or desktop. Upgrade consultation and installation included with every purchase."
+  heroIcon="🔧"
+  heroBg="#E0F7FA"
+>
+
+  <!-- What we sell -->
+  <section class="svc-section">
+    <div class="container">
+      <p class="eyebrow">What We Stock</p>
+      <h2 class="svc-h2">Components and accessories</h2>
+      <p class="svc-lead">We stock components from brands like Intel, AMD, Kingston, Seagate, WD, and Samsung. All products carry manufacturer warranty.</p>
+      <div class="offer-grid">
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E0F7FA;">💾</div>
+          <h3 class="offer-title">RAM Upgrades</h3>
+          <p class="offer-desc">DDR3, DDR4, and DDR5 modules for laptops and desktops. 4GB to 64GB. Kingston, Crucial, Corsair, and HyperX.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E3F2FD;">💿</div>
+          <h3 class="offer-title">SSD and Storage</h3>
+          <p class="offer-desc">SATA and NVMe SSDs from 128GB to 4TB. External HDDs, portable SSDs, and pen drives. Seagate, WD, Samsung, Kingston.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8F5E9;">⚡</div>
+          <h3 class="offer-title">Processors</h3>
+          <p class="offer-desc">Intel Core i3 to i9 and AMD Ryzen 3 to Ryzen 9. Desktop and workstation processors. We advise on compatibility before purchase.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#FFF3E0;">🎮</div>
+          <h3 class="offer-title">Graphics Cards</h3>
+          <p class="offer-desc">NVIDIA and AMD GPUs for gaming, video editing, and CAD. Entry-level to professional workstation cards.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#F3E5F5;">🖱️</div>
+          <h3 class="offer-title">Peripherals and Accessories</h3>
+          <p class="offer-desc">Keyboards, mice, monitors, webcams, headsets, USB hubs, cables, and laptop bags. All major brands in stock.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8EAF6;">🏢</div>
+          <h3 class="offer-title">Bulk Procurement</h3>
+          <p class="offer-desc">Office and institutional purchases with volume pricing. We source, verify, and deliver hardware for large orders.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upgrade consultation -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">Upgrade Service</p>
+      <h2 class="svc-h2" style="text-align:center;">Is an upgrade worth it?</h2>
+      <p class="svc-lead" style="text-align:center; margin-left:auto; margin-right:auto; margin-bottom:var(--sp-6);">We will tell you honestly whether upgrading your current machine makes sense or if a new one is better value.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-8); align-items:start;">
+        <div>
+          <h3 style="font-size:18px; font-weight:700; font-family:var(--font-display); margin-bottom:var(--sp-4);">Popular upgrades we install</h3>
+          {[
+            ['Laptop RAM upgrade', 'Add or replace RAM to speed up your laptop. Most laptops are user-upgradeable.'],
+            ['HDD to SSD swap', 'Replace a slow hard drive with an SSD. The single biggest speed improvement for older machines.'],
+            ['Add second storage drive', 'Keep your original drive, add a fast SSD for the OS. Works on most desktops.'],
+            ['Desktop processor upgrade', 'Upgrade your CPU without replacing the motherboard in many cases. We check socket compatibility first.'],
+            ['GPU upgrade for desktops', 'Faster graphics for gaming, video editing, or multi-display setups.'],
+          ].map(([title, desc]) => (
+            <div style="padding:var(--sp-3) 0; border-bottom:1px solid var(--border);">
+              <strong style="font-size:14px; font-family:var(--font-display); color:var(--text-primary);">{title}</strong>
+              <p style="font-size:13px; color:var(--text-secondary); margin-top:4px; line-height:1.5;">{desc}</p>
+            </div>
+          ))}
+        </div>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:var(--sp-5);">
+          <h3 style="font-size:18px; font-weight:700; font-family:var(--font-display); margin-bottom:var(--sp-3);">How upgrade consultation works</h3>
+          <ol style="display:flex; flex-direction:column; gap:var(--sp-3); padding-left:0; list-style:none;">
+            {[
+              'Bring your device or tell us the model',
+              'We run a diagnostic and check what is upgradeable',
+              'We quote the upgrade with installation included',
+              'You decide, we order and install, usually same day or next day',
+              'We test before handover. No upgrade fee if you decline after seeing the quote',
+            ].map((step, i) => (
+              <li style="display:flex; gap:var(--sp-3); align-items:flex-start; font-size:14px; color:var(--text-secondary);">
+                <span style="width:24px; height:24px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#fff; font-size:12px; font-weight:800;">{i + 1}</span>
+                {step}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brands -->
+  <section class="svc-section">
+    <div class="container" style="text-align:center;">
+      <p class="eyebrow">Brands We Stock</p>
+      <h2 class="svc-h2" style="margin-bottom:var(--sp-5);">All major brands, genuine products</h2>
+      <div style="display:flex; flex-wrap:wrap; gap:var(--sp-3); justify-content:center;">
+        {['Intel', 'AMD', 'Kingston', 'Crucial', 'Corsair', 'Samsung', 'Seagate', 'Western Digital', 'NVIDIA', 'ASUS', 'Logitech', 'HP', 'Dell', 'Lenovo', 'Zebronics', 'TP-Link'].map(brand => (
+          <span style="padding:8px 18px; background:var(--surface); border:1px solid var(--border); border-radius:99px; font-size:14px; font-weight:600; color:var(--text-secondary); box-shadow:var(--shadow-card);">{brand}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">FAQ</p>
+      <h2 class="svc-h2" style="text-align:center; margin-bottom:var(--sp-6);">Common questions</h2>
+      <div class="faq-list">
+        {[
+          ['Is installation included when I buy hardware from you?', 'Yes. Installation is included with most component purchases (RAM, SSD, and internal upgrades). We install it in the store at no extra charge.'],
+          ['Can I check compatibility before buying?', 'Bring your device or tell us the make and model. We check compatibility before you buy anything.'],
+          ['Do you offer a warranty on components?', 'All components carry manufacturer warranty, typically 1 to 3 years depending on the brand and product.'],
+          ['Can you source a specific component not in stock?', 'Yes. Most items we do not have in stock can be sourced within 1 to 3 working days. Contact us with the specification and we will confirm availability.'],
+          ['Do you handle bulk orders for offices?', 'Yes. We offer volume pricing for offices and institutions purchasing multiple units. Contact us with your requirements for a custom quote.'],
+          ['What if the component I buy is not compatible after installation?', 'If we recommended and installed the component, we take responsibility. We will exchange or refund in such cases.'],
+        ].map(([q, a]) => (
+          <div class="faq-item">
+            <p class="faq-q">{q}</p>
+            <p class="faq-a">{a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<style>
+  @media (max-width: 768px) {
+    section > .container > div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

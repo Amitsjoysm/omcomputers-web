@@ -1,0 +1,81 @@
+---
+const testimonials = [
+  {
+    quote: 'OM Computers fixed my laptop screen in under 4 hours. Genuine part, clean job, backed by a 6-month warranty. Highly recommended.',
+    name: 'Rahul S.',
+    role: 'Homeowner, Pune',
+    initials: 'RS',
+    color: '#1E88E5',
+  },
+  {
+    quote: 'We had our entire office CCTV done by OM Computers. Professional installation, remote viewing set up, and they explained everything clearly.',
+    name: 'Meena P.',
+    role: 'Small Business Owner, Pune',
+    initials: 'MP',
+    color: '#2ECC71',
+  },
+  {
+    quote: 'The biometric attendance system works flawlessly six months later. On-time installation and clean payroll integration.',
+    name: 'Vikash T.',
+    role: 'HR Manager, Pune',
+    initials: 'VT',
+    color: '#F5A623',
+  },
+];
+---
+
+<style>
+  .testimonials { padding: var(--sp-9) 0; background: var(--surface-2); }
+  .testimonial-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-6);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+  .testimonial-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-raise); }
+  .stars { color: #F5A623; font-size: 18px; letter-spacing: 2px; }
+  .quote-text { font-size: 15px; color: var(--text-secondary); line-height: 1.75; flex: 1; font-style: italic; }
+  .quote-text::before { content: '"'; color: var(--primary); font-size: 2rem; font-family: var(--font-display); font-weight: 800; line-height: 0; vertical-align: -.4em; margin-right: 2px; }
+  .reviewer { display: flex; align-items: center; gap: var(--sp-3); }
+  .reviewer-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .reviewer-name { font-size: 14px; font-weight: 700; }
+  .reviewer-role { font-size: 12px; color: var(--text-muted); }
+</style>
+
+<section class="testimonials" aria-label="Customer testimonials">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:var(--sp-5);" class="fade-up">
+      <p class="eyebrow">Happy Customers</p>
+      <h2 class="section-title">What Our Customers Say</h2>
+    </div>
+
+    <div class="grid-3">
+      {testimonials.map((t, i) => (
+        <blockquote
+          class="testimonial-card fade-up"
+          style={`transition-delay:${i * 100}ms`}
+        >
+          <div class="stars">★★★★★</div>
+          <p class="quote-text">{t.quote}</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar" style={`background:${t.color};`}>{t.initials}</div>
+            <div>
+              <div class="reviewer-name">{t.name}</div>
+              <div class="reviewer-role">{t.role}</div>
+            </div>
+          </div>
+        </blockquote>
+      ))}
+    </div>
+  </div>
+</section>

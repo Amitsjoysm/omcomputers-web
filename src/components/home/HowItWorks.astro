@@ -1,0 +1,99 @@
+---
+const steps = [
+  {
+    step: '01',
+    title: 'Book or Drop In',
+    desc: 'Call, WhatsApp, or walk in. No appointment needed. We are open Monday to Saturday, 9 AM – 7 PM.',
+    icon: '📞',
+  },
+  {
+    step: '02',
+    title: 'Free Diagnosis',
+    desc: 'We inspect your device and give you a clear written quote with exact parts and labour costs. No obligation.',
+    icon: '🔍',
+  },
+  {
+    step: '03',
+    title: 'Repair & Return',
+    desc: 'Fixed with genuine parts, fully tested, and returned same or next business day. Backed by 6-month warranty.',
+    icon: '✅',
+  },
+];
+---
+
+<style>
+  .how-it-works { padding: var(--sp-9) 0; }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+    position: relative;
+  }
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 36px;
+    left: calc(16.66% + 24px);
+    right: calc(16.66% + 24px);
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-light), var(--primary), var(--primary-light));
+    z-index: 0;
+  }
+  .step-card {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .step-number-wrap {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto var(--sp-4);
+    position: relative;
+  }
+  .step-number-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-light);
+  }
+  .step-number { font-size: 22px; font-weight: 800; color: #fff; font-family: var(--font-display); }
+  .step-icon { font-size: 20px; margin-bottom: var(--sp-1); }
+  .step-title { font-size: 19px; font-weight: 700; margin-bottom: var(--sp-2); font-family: var(--font-display); }
+  .step-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.6; max-width: 260px; margin: 0 auto; }
+
+  @media (max-width: 768px) {
+    .steps-grid { grid-template-columns: 1fr; gap: var(--sp-7); }
+    .steps-grid::before { display: none; }
+    .step-card { display: flex; align-items: flex-start; gap: var(--sp-4); text-align: left; }
+    .step-number-wrap { margin: 0; flex-shrink: 0; width: 56px; height: 56px; }
+    .step-desc { max-width: none; }
+  }
+</style>
+
+<section class="how-it-works" aria-label="How it works">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:var(--sp-5);" class="fade-up">
+      <p class="eyebrow">Simple Process</p>
+      <h2 class="section-title">How It Works</h2>
+      <p class="lead" style="max-width:500px; margin:0 auto;">Getting your device repaired is simple, transparent, and hassle-free.</p>
+    </div>
+
+    <div class="steps-grid">
+      {steps.map((step, i) => (
+        <div class="step-card fade-up" style={`transition-delay:${i * 120}ms`}>
+          <div class="step-number-wrap">
+            <span class="step-number">{step.step}</span>
+          </div>
+          <div>
+            <div class="step-icon">{step.icon}</div>
+            <h3 class="step-title">{step.title}</h3>
+            <p class="step-desc">{step.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

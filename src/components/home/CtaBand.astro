@@ -1,0 +1,84 @@
+---
+const site = await import('../../content/settings/site.json').then(m => m.default).catch(() => ({
+  phone: '+91 98765 43210',
+}));
+---
+
+<style>
+  .cta-band {
+    background: var(--primary);
+    padding: var(--sp-8) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .cta-inner { position: relative; z-index: 1; }
+  .cta-headline {
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 800;
+    color: #fff;
+    font-family: var(--font-display);
+    margin-bottom: var(--sp-2);
+  }
+  .cta-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,.8);
+    max-width: 520px;
+    margin: 0 auto var(--sp-6);
+    line-height: 1.6;
+  }
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
+  }
+  .btn-white {
+    display: inline-flex; align-items: center; gap: var(--sp-2);
+    padding: 14px 32px;
+    border-radius: var(--radius-sm);
+    background: #fff; color: var(--primary); font-weight: 700;
+    border: 2px solid #fff;
+    transition: background 150ms, border-color 150ms, color 150ms;
+    font-size: 16px;
+    font-family: var(--font-body);
+    text-decoration: none;
+  }
+  .btn-white:hover { background: transparent; color: #fff; }
+  .btn-white-outline {
+    display: inline-flex; align-items: center; gap: var(--sp-2);
+    padding: 14px 32px;
+    border-radius: var(--radius-sm);
+    background: transparent; color: #fff; font-weight: 700;
+    border: 2px solid rgba(255,255,255,.5);
+    transition: border-color 150ms, background 150ms;
+    font-size: 16px;
+    font-family: var(--font-body);
+    text-decoration: none;
+  }
+  .btn-white-outline:hover { border-color: #fff; background: rgba(255,255,255,.1); }
+</style>
+
+<section class="cta-band" aria-label="Call to action">
+  <div class="container">
+    <div class="cta-inner fade-up">
+      <h2 class="cta-headline">Got a device issue? Let's fix it today.</h2>
+      <p class="cta-sub">Walk in or call. Same-day diagnosis, transparent quote, no obligation.</p>
+      <div class="cta-actions">
+        <a href="/contact" class="btn-white">Contact Us Now</a>
+        <a href={`tel:${site.phone.replace(/\s/g,'')}`} class="btn-white-outline">
+          📞 {site.phone}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

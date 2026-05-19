@@ -1,0 +1,166 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+---
+
+<ServiceLayout
+  title="Web & Digital Services"
+  description="Website design, SEO, Meta Ads, and marketplace onboarding for businesses in Pune. Monthly performance reporting included. OM Computers digital services."
+  eyebrow="Digital Services"
+  heading="Web & Digital Services"
+  subheading="Business websites, Google SEO, Meta Ads, and marketplace setup for small and mid-sized businesses in Pune. Results measured and reported every month."
+  heroIcon="🌐"
+  heroBg="#E8EAF6"
+>
+
+  <!-- What we offer -->
+  <section class="svc-section">
+    <div class="container">
+      <p class="eyebrow">What We Offer</p>
+      <h2 class="svc-h2">Digital services for local businesses</h2>
+      <p class="svc-lead">We help Pune businesses get found online, convert visitors into leads, and sell on national marketplaces.</p>
+      <div class="offer-grid">
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8EAF6;">🖥️</div>
+          <h3 class="offer-title">Business Website Design</h3>
+          <p class="offer-desc">Clean, fast websites for service businesses. Mobile-ready, contact form included, and ready to rank on Google.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E3F2FD;">🛒</div>
+          <h3 class="offer-title">E-Commerce Stores</h3>
+          <p class="offer-desc">Online stores with product listings, payment gateway, inventory management, and order notifications.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8F5E9;">🔍</div>
+          <h3 class="offer-title">Google SEO</h3>
+          <p class="offer-desc">Local and organic SEO: Google Business Profile, on-page optimisation, content, and link building to improve your search rankings.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#FFF3E0;">📣</div>
+          <h3 class="offer-title">Meta Ads Management</h3>
+          <p class="offer-desc">Facebook and Instagram ad campaigns for lead generation, brand awareness, and local reach. Set up, managed, and optimised monthly.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#F3E5F5;">📦</div>
+          <h3 class="offer-title">Marketplace Onboarding</h3>
+          <p class="offer-desc">Get your products listed on Amazon and Flipkart. We handle registration, listing creation, and initial optimisation.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E0F7FA;">📊</div>
+          <h3 class="offer-title">Monthly Reporting</h3>
+          <p class="offer-desc">Plain-language reports every month showing traffic, leads, ad spend, and what changed. No jargon, clear numbers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">How We Work</p>
+      <h2 class="svc-h2" style="text-align:center;">From brief to live</h2>
+      <p class="svc-lead" style="text-align:center; margin-left:auto; margin-right:auto; margin-bottom:var(--sp-7);">We keep the process short and the communication direct.</p>
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4 class="step-title">Discovery Call</h4>
+          <p class="step-desc">We learn about your business, target customers, and what you want to achieve online.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4 class="step-title">Proposal</h4>
+          <p class="step-desc">A written scope with timeline and monthly cost. We do not lock you into long contracts.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4 class="step-title">Build and Launch</h4>
+          <p class="step-desc">Website built and reviewed with you. Ads and SEO set up. Everything live within the agreed timeline.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <h4 class="step-title">Manage and Report</h4>
+          <p class="step-desc">We run and optimise each month, share a clear report, and adjust the plan based on results.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why local businesses -->
+  <section class="svc-section">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-8); align-items:start;">
+        <div>
+          <p class="eyebrow">Why Choose Us</p>
+          <h2 class="svc-h2">Built for Pune businesses</h2>
+          <p style="font-size:15px; color:var(--text-secondary); line-height:1.7; margin-bottom:var(--sp-4);">
+            We are based in Pune and work with local businesses daily. We know the market, speak the language, and understand what local customers search for.
+          </p>
+          <ul style="display:flex; flex-direction:column; gap:var(--sp-3);">
+            {[
+              'No minimum contract length for digital services',
+              'Reports in plain language, not marketing speak',
+              'WhatsApp access to your account manager',
+              'We build sites we can hand over, not trap you in a platform',
+              'Local SEO experience for Pune and Maharashtra markets',
+            ].map(item => (
+              <li style="display:flex; gap:var(--sp-2); align-items:flex-start; font-size:14px; color:var(--text-secondary);">
+                <span style="color:var(--primary); font-size:18px; line-height:1; flex-shrink:0;">›</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow">Platforms We Use</p>
+          <h2 class="svc-h2">Technology stack</h2>
+          <div style="display:flex; flex-direction:column; gap:var(--sp-3); margin-top:var(--sp-3);">
+            {[
+              ['Websites', 'WordPress, Astro, Shopify, WooCommerce'],
+              ['Advertising', 'Meta Ads Manager, Google Ads'],
+              ['SEO Tools', 'Google Search Console, Ahrefs, Semrush'],
+              ['Analytics', 'Google Analytics 4, Clarity'],
+              ['Marketplaces', 'Amazon Seller Central, Flipkart Seller Hub'],
+              ['Email Marketing', 'Mailchimp, Brevo, WhatsApp Business API'],
+            ].map(([label, value]) => (
+              <div style="display:flex; gap:var(--sp-3); align-items:flex-start; padding:var(--sp-3); background:var(--surface-2); border-radius:var(--radius-md);">
+                <strong style="font-size:13px; font-weight:700; color:var(--primary); white-space:nowrap; min-width:100px;">{label}</strong>
+                <span style="font-size:13px; color:var(--text-secondary);">{value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">FAQ</p>
+      <h2 class="svc-h2" style="text-align:center; margin-bottom:var(--sp-6);">Common questions</h2>
+      <div class="faq-list">
+        {[
+          ['How long does a website take to build?', 'A standard business website takes 2 to 3 weeks. E-commerce stores with many products take 4 to 6 weeks depending on the catalogue size.'],
+          ['Do you write the content for the website?', 'We write basic page content based on your business information. For blog posts and detailed service pages, we can write them or work from your notes.'],
+          ['How soon will SEO show results?', 'Local SEO improvements to Google Business Profile can show results within 4 to 8 weeks. Organic rankings for competitive keywords typically take 3 to 6 months with consistent work.'],
+          ['What is the minimum Meta Ads budget?', 'We recommend a minimum ad spend of Rs. 5,000 per month to generate enough data for optimisation. Our management fee is separate and discussed upfront.'],
+          ['Can you take over a website or ad account we already have?', 'Yes. We review your current setup, note what is working, and continue from there. No need to start from scratch.'],
+          ['Do you handle Amazon and Flipkart listing creation?', 'Yes. We handle account setup, product listing, image guidelines, and initial optimisation for discoverability on both platforms.'],
+        ].map(([q, a]) => (
+          <div class="faq-item">
+            <p class="faq-q">{q}</p>
+            <p class="faq-a">{a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<style>
+  @media (max-width: 768px) {
+    section > .container > div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

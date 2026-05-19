@@ -1,0 +1,102 @@
+---
+export interface PriceItem {
+  name: string;
+  brand: string;
+  specs: string;
+  price: number;
+  inStock: boolean;
+  image?: ImageMetadata;
+}
+
+export interface Props {
+  item: PriceItem;
+  whatsapp: string;
+}
+
+const { item, whatsapp } = Astro.props;
+
+const formattedPrice = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  maximumFractionDigits: 0,
+}).format(item.price);
+
+const waText = encodeURIComponent(`Hi OM Computers! I'm interested in: ${item.name} (${item.brand}) - ${formattedPrice}. Please confirm availability.`);
+const waUrl = `https://wa.me/${whatsapp}?text=${waText}`;
+---
+
+<style>
+  .price-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-5);
+    box-shadow: var(--shadow-card);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+  .price-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-raise); }
+  .product-image {
+    width: 150px; height: 150px;
+    object-fit: contain;
+    background: var(--surface-2);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    align-self: center;
+    padding: var(--sp-2);
+  }
+  .product-image-placeholder {
+    width: 150px; height: 150px;
+    background: var(--surface-2);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    align-self: center;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; color: var(--text-muted);
+  }
+  .product-name { font-size: 16px; font-weight: 700; font-family: var(--font-display); line-height: 1.3; }
+  .product-specs { font-size: 13px; font-family: var(--font-mono); color: var(--text-secondary); line-height: 1.5; }
+  .product-price { font-size: 24px; font-weight: 700; color: var(--primary); font-family: var(--font-mono); }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); flex-wrap: wrap; margin-top: auto; }
+  .wa-btn {
+    display: inline-flex; align-items: center; gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--radius-sm);
+    background: #25D366; color: #fff; font-weight: 600;
+    font-size: 13px; text-decoration: none;
+    transition: opacity 150ms;
+    font-family: var(--font-body);
+  }
+  .wa-btn:hover { opacity: .85; }
+</style>
+
+<article class="price-card" aria-label={item.name}>
+  {item.image
+    ? <img class="product-image" src={item.image.src} alt={item.name} width="150" height="150" loading="lazy" />
+    : <div class="product-image-placeholder">🔧</div>
+  }
+
+  <div>
+    <span class="badge badge-primary" style="margin-bottom:8px;">{item.brand}</span>
+    <h3 class="product-name">{item.name}</h3>
+  </div>
+
+  <p class="product-specs">{item.specs}</p>
+
+  <div class="card-footer">
+    <div>
+      <div class="product-price">{formattedPrice}</div>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+      <span class={item.inStock ? 'badge badge-success' : 'badge badge-muted'}>
+        {item.inStock ? '✓ In Stock' : 'Out of Stock'}
+      </span>
+      <a href={waUrl} target="_blank" rel="noopener" class="wa-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+        Request Quote
+      </a>
+    </div>
+  </div>
+</article>

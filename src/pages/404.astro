@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="Page Not Found" description="The page you were looking for doesn't exist.">
+  <Navbar />
+
+  <main id="main-content" style="min-height:60vh; display:flex; align-items:center; justify-content:center; padding:var(--sp-8) 0;">
+    <div style="text-align:center; max-width:480px; padding:0 var(--sp-5);">
+      <div style="font-size:72px; margin-bottom:var(--sp-4); line-height:1;">🔍</div>
+      <p class="eyebrow" style="margin-bottom:var(--sp-2);">Error 404</p>
+      <h1 style="font-size:clamp(28px,4vw,40px); font-weight:800; font-family:var(--font-display); margin-bottom:var(--sp-3); color:var(--text-primary);">
+        Page Not Found
+      </h1>
+      <p style="font-size:16px; color:var(--text-secondary); line-height:1.7; margin-bottom:var(--sp-6);">
+        The page you were looking for doesn't exist or has been moved. Let us help you find what you need.
+      </p>
+      <div style="display:flex; gap:var(--sp-3); justify-content:center; flex-wrap:wrap;">
+        <a href="/" class="btn-primary">Go Home</a>
+        <a href="/contact" class="btn-outline">Contact Us</a>
+      </div>
+
+      <div style="margin-top:var(--sp-7); padding-top:var(--sp-5); border-top:1px solid var(--border);">
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:var(--sp-3);">Or go directly to:</p>
+        <div style="display:flex; gap:var(--sp-3); justify-content:center; flex-wrap:wrap;">
+          <a href="/blog" style="color:var(--primary); font-size:14px; font-weight:500;">Blog</a>
+          <a href="/parts" style="color:var(--primary); font-size:14px; font-weight:500;">Parts List</a>
+          <a href="/#services" style="color:var(--primary); font-size:14px; font-weight:500;">Services</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

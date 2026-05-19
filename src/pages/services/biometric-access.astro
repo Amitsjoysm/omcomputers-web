@@ -1,0 +1,145 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+---
+
+<ServiceLayout
+  title="Biometric & Access Control"
+  description="Biometric attendance and door access control systems in Pune. Fingerprint and face recognition terminals, payroll software integration, and on-site installation by OM Computers."
+  eyebrow="Access Control"
+  heading="Biometric & Access Control Systems"
+  subheading="Fingerprint and face-recognition terminals for attendance tracking and door access. On-site installation and payroll software integration included."
+  heroIcon="🔐"
+  heroBg="#FFF3E0"
+>
+
+  <!-- What we offer -->
+  <section class="svc-section">
+    <div class="container">
+      <p class="eyebrow">What We Offer</p>
+      <h2 class="svc-h2">Attendance and access solutions</h2>
+      <p class="svc-lead">For offices, factories, schools, and gated communities. We supply, install, and support the full system.</p>
+      <div class="offer-grid">
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#FFF3E0;">👆</div>
+          <h3 class="offer-title">Fingerprint Attendance</h3>
+          <p class="offer-desc">Wall-mounted fingerprint readers for clocking in and out. Supports up to 5,000 users per device. Works offline with internal memory.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E3F2FD;">😊</div>
+          <h3 class="offer-title">Face Recognition Terminals</h3>
+          <p class="offer-desc">Contact-free attendance with face recognition. Accurate even with masks in most models. Ideal for high-traffic entry points.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8F5E9;">🚪</div>
+          <h3 class="offer-title">Door Access Control</h3>
+          <p class="offer-desc">Electric door locks, mag locks, and access readers. Control who can enter which area and at what times.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#F3E5F5;">💳</div>
+          <h3 class="offer-title">Card and PIN Access</h3>
+          <p class="offer-desc">RFID card readers and PIN pads for areas where biometric is not preferred. Visitor management and temporary access cards.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8EAF6;">📊</div>
+          <h3 class="offer-title">Payroll Integration</h3>
+          <p class="offer-desc">We connect your biometric device to payroll software for in/out reports, shift calculations, and leave management.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E0F7FA;">🎓</div>
+          <h3 class="offer-title">Staff Training</h3>
+          <p class="offer-desc">We train your HR and admin team on device operation, report generation, and basic troubleshooting before we leave.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">Installation Process</p>
+      <h2 class="svc-h2" style="text-align:center;">From consultation to go-live</h2>
+      <p class="svc-lead" style="text-align:center; margin-left:auto; margin-right:auto; margin-bottom:var(--sp-7);">We handle the full project. You focus on your business.</p>
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4 class="step-title">Requirement Check</h4>
+          <p class="step-desc">We understand your headcount, shift structure, door requirements, and payroll software in use.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4 class="step-title">Device Selection</h4>
+          <p class="step-desc">We recommend the right device and access controller for your budget and number of users.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4 class="step-title">Installation</h4>
+          <p class="step-desc">Devices mounted, wired, and configured. User enrolment and software setup done on-site.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <h4 class="step-title">Training and Support</h4>
+          <p class="step-desc">Your team learns the system before we leave. Ongoing phone support included.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use cases -->
+  <section class="svc-section">
+    <div class="container">
+      <p class="eyebrow">Who Uses This</p>
+      <h2 class="svc-h2">Common use cases</h2>
+      <p class="svc-lead">Biometric and access systems work across many industries. Here are the most common setups we install.</p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-4);">
+        {[
+          { icon: '🏢', title: 'Offices', desc: 'Track attendance, restrict server rooms, and generate payroll-ready reports.' },
+          { icon: '🏭', title: 'Factories', desc: 'Shift-based attendance, multi-gate access, contractor management.' },
+          { icon: '🏫', title: 'Schools and Colleges', desc: 'Staff attendance, restricted lab and admin zone access.' },
+          { icon: '🏥', title: 'Clinics and Hospitals', desc: 'Staff entry to restricted areas, medication room access control.' },
+          { icon: '🏘️', title: 'Gated Communities', desc: 'Resident and visitor access, guard management, entry logs.' },
+          { icon: '🛒', title: 'Retail and Warehouses', desc: 'Staff attendance, restricted stock room access, shift reporting.' },
+        ].map(({ icon, title, desc }) => (
+          <div style="display:flex; gap:var(--sp-3); align-items:flex-start; padding:var(--sp-4); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md);">
+            <span style="font-size:24px; flex-shrink:0;">{icon}</span>
+            <div>
+              <strong style="font-size:15px; font-family:var(--font-display); color:var(--text-primary);">{title}</strong>
+              <p style="font-size:13px; color:var(--text-secondary); margin-top:4px; line-height:1.5;">{desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">FAQ</p>
+      <h2 class="svc-h2" style="text-align:center; margin-bottom:var(--sp-6);">Common questions</h2>
+      <div class="faq-list">
+        {[
+          ['What happens if the power goes out?', 'Most door controllers have battery backup. Biometric devices store data internally and sync to software when power is restored.'],
+          ['Can the system integrate with our existing payroll software?', 'We support integration with most payroll software used in India, including Keka, greytHR, HRMantra, and custom Excel-based workflows. We check compatibility before recommending a device.'],
+          ['How many users can be enrolled per device?', 'Entry-level devices support 500 to 1,000 users. Mid-range devices handle 3,000 to 5,000. For larger headcounts, we recommend networked multi-device setups.'],
+          ['Is face recognition accurate with glasses or in low light?', 'Modern face recognition terminals handle glasses and moderate lighting variation well. We recommend models suited to your environment and test before finalising.'],
+          ['Can we restrict access to certain rooms for specific employees?', 'Yes. Access controllers let you define which users can enter which areas and during which time windows.'],
+          ['Do you provide maintenance after installation?', 'Yes. We offer AMC contracts for biometric and access systems that include periodic checks, software updates, and priority support.'],
+        ].map(([q, a]) => (
+          <div class="faq-item">
+            <p class="faq-q">{q}</p>
+            <p class="faq-a">{a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<style>
+  @media (max-width: 768px) {
+    section > .container > div[style*="grid-template-columns:repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

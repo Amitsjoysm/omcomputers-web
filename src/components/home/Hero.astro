@@ -1,0 +1,185 @@
+---
+const site = await import('../../content/settings/site.json').then(m => m.default).catch(() => ({
+  phone: '+91 98765 43210',
+}));
+---
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: var(--sp-7) 0 var(--sp-8);
+    background-color: var(--surface);
+  }
+  .hero-dotgrid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: .6;
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-8);
+    align-items: center;
+  }
+  .hero-content { display: flex; flex-direction: column; gap: var(--sp-4); }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: 6px 14px;
+    background: var(--primary-light);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+    width: fit-content;
+  }
+  .hero-h1 {
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+  }
+  .hero-h1 span { color: var(--primary); }
+  .hero-lead { font-size: 17px; color: var(--text-secondary); line-height: 1.7; max-width: 500px; }
+  .hero-actions { display: flex; gap: var(--sp-3); flex-wrap: wrap; margin-top: var(--sp-2); }
+  .trust-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3) var(--sp-5);
+    margin-top: var(--sp-4);
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .trust-item span.check { color: var(--success); font-size: 15px; }
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-card-stack {
+    display: grid;
+    gap: var(--sp-3);
+    width: 100%;
+    max-width: 420px;
+  }
+  .hero-stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-4) var(--sp-5);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+  .hero-stat-icon {
+    width: 48px; height: 48px;
+    border-radius: var(--radius-md);
+    background: var(--primary-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .hero-stat-label { font-size: 13px; color: var(--text-muted); }
+  .hero-stat-value { font-size: 20px; font-weight: 700; color: var(--text-primary); font-family: var(--font-display); }
+
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+  }
+  @media (max-width: 600px) {
+    .hero { padding: var(--sp-6) 0; }
+    .trust-strip { gap: var(--sp-2) var(--sp-3); }
+    .hero-actions { flex-direction: column; }
+    .hero-actions a { justify-content: center; }
+  }
+</style>
+
+<section class="hero" aria-label="Hero">
+  <div class="hero-dotgrid" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content fade-up">
+        <div class="hero-eyebrow">
+          <span>📍</span> Trusted Computer &amp; IT Experts · Pune
+        </div>
+
+        <h1 class="hero-h1">
+          Repair. Upgrade. Secure.<br />
+          <span>Your Tech,</span> Our Expertise.
+        </h1>
+
+        <p class="hero-lead">
+          From cracked laptop screens to full CCTV installations, OM Computers handles every IT need for homes and businesses across Pune.
+        </p>
+
+        <div class="hero-actions">
+          <a href="/contact" class="btn-primary" style="font-size:16px; padding:14px 28px;">
+            🔧 Book a Repair
+          </a>
+          <a href="/prices" class="btn-outline" style="font-size:16px; padding:14px 28px;">
+            See Our Prices
+          </a>
+        </div>
+
+        <div class="trust-strip">
+          <div class="trust-item"><span class="check">✓</span> Genuine Parts Only</div>
+          <div class="trust-item"><span class="check">✓</span> Same-Day Diagnosis</div>
+          <div class="trust-item"><span class="check">✓</span> 6-Month Repair Warranty</div>
+          <div class="trust-item"><span class="check">✓</span> CCTV &amp; Biometric Experts</div>
+        </div>
+      </div>
+
+      <div class="hero-visual fade-up" style="transition-delay:150ms;">
+        <div class="hero-card-stack">
+          <div class="hero-stat-card">
+            <div class="hero-stat-icon">🖥️</div>
+            <div>
+              <div class="hero-stat-label">Devices Repaired</div>
+              <div class="hero-stat-value">500+</div>
+            </div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-icon">📡</div>
+            <div>
+              <div class="hero-stat-label">CCTV Cameras Installed</div>
+              <div class="hero-stat-value">100+</div>
+            </div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-icon">🏆</div>
+            <div>
+              <div class="hero-stat-label">Repair Warranty</div>
+              <div class="hero-stat-value">6 Months</div>
+            </div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-icon">⚡</div>
+            <div>
+              <div class="hero-stat-label">Diagnosis</div>
+              <div class="hero-stat-value">Same Day</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

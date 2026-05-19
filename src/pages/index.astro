@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import HeroIsland from '../components/home/Hero.tsx';
+import StatsBar from '../components/home/StatsBar.astro';
+import ServicesGrid from '../components/home/ServicesGrid.astro';
+import WhyUs from '../components/home/WhyUs.astro';
+import HowItWorks from '../components/home/HowItWorks.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import Faq from '../components/home/Faq.astro';
+import CtaBand from '../components/home/CtaBand.astro';
+
+const site = await import('../content/settings/site.json').then(m => m.default).catch(() => ({
+  phone: '+91 98765 43210',
+  whatsapp: '919876543210',
+}));
+---
+
+<BaseLayout
+  title="Computer Repair, CCTV & IT Services in Pune"
+  description="OM Computers: Laptop repair, CCTV installation, biometric systems, IT support, and digital services in Pune. Same-day diagnosis, genuine parts, 6-month warranty."
+>
+  <Navbar />
+  <main id="main-content">
+    <HeroIsland client:load phone={site.phone} whatsapp={site.whatsapp} />
+    <StatsBar />
+    <ServicesGrid />
+    <WhyUs />
+    <HowItWorks />
+    <Testimonials />
+    <Faq />
+    <CtaBand />
+  </main>
+  <Footer />
+</BaseLayout>

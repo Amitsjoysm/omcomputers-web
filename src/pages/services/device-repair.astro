@@ -1,0 +1,166 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+---
+
+<ServiceLayout
+  title="Device Repair"
+  description="Laptop, desktop, and printer repair in Pune. Screen replacement, motherboard repair, OS reinstall, data backup. 6-month warranty on all repairs at OM Computers."
+  eyebrow="Repair Services"
+  heading="Device Repair in Pune"
+  subheading="Fast, reliable repairs for laptops, desktops, and printers. Most repairs done same day. 6-month warranty on all parts and labour."
+  heroIcon="🖥️"
+  heroBg="#E3F2FD"
+>
+
+  <!-- What we repair -->
+  <section class="svc-section">
+    <div class="container">
+      <p class="eyebrow">What We Fix</p>
+      <h2 class="svc-h2">Full-range device repair</h2>
+      <p class="svc-lead">We work on all major brands: Dell, HP, Lenovo, Asus, Acer, Apple, and more.</p>
+      <div class="offer-grid">
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E3F2FD;">💻</div>
+          <h3 class="offer-title">Laptop Repair</h3>
+          <p class="offer-desc">Screen replacement, keyboard, touchpad, charging port, battery, hinge, and liquid-damage repair for all laptop brands.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8EAF6;">🖥️</div>
+          <h3 class="offer-title">Desktop Repair</h3>
+          <p class="offer-desc">Motherboard diagnosis, power supply, RAM, graphics card, storage drive replacement, and cabinet cleaning for desktops and all-in-ones.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#F3E5F5;">🖨️</div>
+          <h3 class="offer-title">Printer Repair</h3>
+          <p class="offer-desc">Inkjet and laser printer servicing, cartridge issues, paper-jam fixes, drum replacement, and driver configuration for HP, Canon, Epson.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8F5E9;">🔩</div>
+          <h3 class="offer-title">Screen Replacement</h3>
+          <p class="offer-desc">Original and compatible LCD/LED panels for laptops and monitors. Display replaced while you wait in most cases.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#FFF3E0;">🛡️</div>
+          <h3 class="offer-title">Data Backup Before Repair</h3>
+          <p class="offer-desc">We back up your data before any repair starts. You decide what to save. Your files stay yours.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E0F7FA;">⚙️</div>
+          <h3 class="offer-title">OS Reinstall & Tune-up</h3>
+          <p class="offer-desc">Windows reinstallation, driver setup, software installation, and performance tuning to get your machine running clean.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">How It Works</p>
+      <h2 class="svc-h2" style="text-align:center;">Repair in 4 steps</h2>
+      <p class="svc-lead" style="text-align:center; margin-left:auto; margin-right:auto; margin-bottom:var(--sp-7);">Drop your device off or call us first. No hidden fees, no surprises.</p>
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4 class="step-title">Bring it in</h4>
+          <p class="step-desc">Walk in or call ahead. We do a free visual check on the spot.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4 class="step-title">Diagnosis</h4>
+          <p class="step-desc">We run a full diagnostic and give you a written quote before touching anything.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4 class="step-title">Repair</h4>
+          <p class="step-desc">Genuine or compatible parts, installed by our trained technicians. Most repairs done same day.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <h4 class="step-title">Pick up</h4>
+          <p class="step-desc">We call when ready. 6-month warranty included on all parts and labour.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us -->
+  <section class="svc-section">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-8); align-items:center;">
+        <div>
+          <p class="eyebrow">Why OM Computers</p>
+          <h2 class="svc-h2">What sets us apart</h2>
+          <ul style="display:flex; flex-direction:column; gap:var(--sp-3); margin-top:var(--sp-4);">
+            {[
+              ['6-Month Warranty', 'On all parts and labour. If it fails, we fix it free.'],
+              ['Free Diagnosis', 'No charge to check your device. Quote given before any work starts.'],
+              ['Same-Day Repairs', 'Most screen, keyboard, and software repairs completed the same day.'],
+              ['Genuine Parts', 'We use original or certified-compatible parts only. No cheap substitutes.'],
+              ['Data Safety', 'Your files are backed up before we start. We never format without asking.'],
+            ].map(([title, desc]) => (
+              <li style="display:flex; gap:var(--sp-3); align-items:flex-start;">
+                <span style="width:24px; height:24px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <div>
+                  <strong style="font-size:15px; font-family:var(--font-display); color:var(--text-primary);">{title}</strong>
+                  <p style="font-size:14px; color:var(--text-secondary); margin-top:2px;">{desc}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div style="background:var(--surface-2); border-radius:var(--radius-lg); padding:var(--sp-6); border:1px solid var(--border);">
+          <p style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); margin-bottom:var(--sp-4);">Common Repairs and Typical Turnaround</p>
+          {[
+            ['Screen Replacement', 'Same day'],
+            ['Keyboard Replacement', 'Same day'],
+            ['Battery Replacement', '1-2 hours'],
+            ['Motherboard Repair', '2-3 days'],
+            ['Liquid Damage', '1-3 days'],
+            ['OS Reinstallation', 'Same day'],
+            ['Data Recovery', '1-5 days'],
+          ].map(([service, time]) => (
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border);">
+              <span style="font-size:14px; color:var(--text-primary);">{service}</span>
+              <span style="font-size:13px; font-weight:600; color:var(--primary); background:var(--primary-light); padding:3px 10px; border-radius:99px;">{time}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">FAQ</p>
+      <h2 class="svc-h2" style="text-align:center; margin-bottom:var(--sp-6);">Common questions</h2>
+      <div class="faq-list">
+        {[
+          ['Do you repair Apple/Mac devices?', 'We repair MacBooks for screen, battery, keyboard, and software issues. Motherboard repairs depend on the model. Call us to confirm before bringing it in.'],
+          ['What if the repair cannot be fixed?', 'If we cannot repair your device, you pay nothing. Diagnosis is always free.'],
+          ['Do you offer home pickup?', 'Yes, for bulk or corporate orders. Home pickup for individual devices is available in select Pune areas. Contact us to check your location.'],
+          ['Are replacement parts genuine?', 'We use original parts where available. For older models, we use certified-compatible parts and tell you upfront.'],
+          ['Is there a warranty on repairs?', 'All repairs carry a 6-month warranty on parts and labour. If the same issue returns within that period, we fix it at no charge.'],
+          ['Can you recover data from a dead device?', 'In most cases, yes. Data recovery success depends on the type of failure. We assess the drive first and confirm likelihood before proceeding.'],
+        ].map(([q, a]) => (
+          <div class="faq-item">
+            <p class="faq-q">{q}</p>
+            <p class="faq-a">{a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<style>
+  @media (max-width: 768px) {
+    section > .container > div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.published);
+  return posts.map(post => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const bodyText = post.body ?? '';
+const wordCount = bodyText.split(/\s+/).filter(Boolean).length;
+const readTime = Math.max(1, Math.ceil(wordCount / 200));
+---
+
+<BlogPostLayout
+  title={post.data.title}
+  excerpt={post.data.excerpt}
+  tags={post.data.tags}
+  publishDate={post.data.publishDate}
+  readTime={readTime}
+  coverImage={post.data.coverImage as any}
+  slug={post.slug}
+>
+  <Content />
+</BlogPostLayout>

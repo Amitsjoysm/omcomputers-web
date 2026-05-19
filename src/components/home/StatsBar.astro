@@ -1,0 +1,98 @@
+---
+const stats = [
+  { value: 500, suffix: '+', label: 'Devices Repaired' },
+  { value: 100, suffix: '+', label: 'CCTV Cameras Installed' },
+  { value: 6,   suffix: ' Mo', label: 'Repair Warranty' },
+  { value: 1,   suffix: ' Day', label: 'Same Day Diagnosis' },
+];
+---
+
+<style>
+  .stats-bar {
+    background: var(--primary);
+    padding: var(--sp-5) 0;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-5);
+  }
+  .stat-item {
+    text-align: center;
+    color: #fff;
+  }
+  .stat-number {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    font-family: var(--font-display);
+    line-height: 1;
+    margin-bottom: var(--sp-1);
+  }
+  .stat-label {
+    font-size: 14px;
+    opacity: .85;
+    font-weight: 500;
+  }
+  .stat-divider {
+    width: 1px;
+    background: rgba(255,255,255,.2);
+    margin: 0 var(--sp-2);
+  }
+  @media (max-width: 768px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-5); }
+    .stat-divider { display: none; }
+  }
+  @media (max-width: 400px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+  }
+</style>
+
+<section class="stats-bar" aria-label="Key statistics">
+  <div class="container">
+    <div class="stats-grid">
+      {stats.map((stat, i) => (
+        <div class="stat-item fade-up" style={`transition-delay:${i * 80}ms`}>
+          <div
+            class="stat-number"
+            data-count-to={stat.value}
+            data-count-suffix={stat.suffix}
+          >
+            {stat.value}{stat.suffix}
+          </div>
+          <div class="stat-label">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    function animateCount(el) {
+      const target = parseInt(el.dataset.countTo, 10);
+      const suffix = el.dataset.countSuffix || '';
+      const duration = 1200;
+      const start = performance.now();
+      function tick(now) {
+        const elapsed = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - elapsed, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (elapsed < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    if (typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('[data-count-to]').forEach(animateCount);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const statsBar = document.querySelector('.stats-bar');
+    if (statsBar) observer.observe(statsBar);
+  })();
+</script>

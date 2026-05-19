@@ -1,0 +1,164 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+---
+
+<ServiceLayout
+  title="IT Support & AMC"
+  description="IT support and Annual Maintenance Contracts for homes and businesses in Pune. Network setup, server configuration, helpdesk, and endpoint security by OM Computers."
+  eyebrow="IT Services"
+  heading="IT Support & Annual Maintenance"
+  subheading="On-site and remote support for your computers, network, and servers. AMC contracts for businesses who need predictable IT costs and fast response."
+  heroIcon="💻"
+  heroBg="#F3E5F5"
+>
+
+  <!-- What we offer -->
+  <section class="svc-section">
+    <div class="container">
+      <p class="eyebrow">What We Offer</p>
+      <h2 class="svc-h2">IT support for every need</h2>
+      <p class="svc-lead">From a single computer at home to a 50-seat office, we provide the level of support that fits your situation.</p>
+      <div class="offer-grid">
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#F3E5F5;">📋</div>
+          <h3 class="offer-title">Annual Maintenance Contracts</h3>
+          <p class="offer-desc">Fixed-cost yearly contracts for businesses. Includes scheduled visits, priority support, and a defined response time for faults.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E3F2FD;">🛠️</div>
+          <h3 class="offer-title">On-Site Support</h3>
+          <p class="offer-desc">We come to your office or home for hardware faults, network issues, printer problems, and any issue that cannot be fixed remotely.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8F5E9;">🌐</div>
+          <h3 class="offer-title">Remote Helpdesk</h3>
+          <p class="offer-desc">Fast remote support for software issues, configuration, user account problems, and day-to-day IT questions. No travel delay.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#FFF3E0;">🔌</div>
+          <h3 class="offer-title">Network Setup</h3>
+          <p class="offer-desc">LAN cabling, Wi-Fi access points, router and firewall configuration, and structured cabling for new or expanding offices.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E8EAF6;">🖥️</div>
+          <h3 class="offer-title">Server Configuration</h3>
+          <p class="offer-desc">Windows Server setup, file sharing, Active Directory, backup configuration, and server hardware maintenance.</p>
+        </div>
+        <div class="offer-card">
+          <div class="offer-icon" style="background:#E0F7FA;">🔒</div>
+          <h3 class="offer-title">Endpoint Security</h3>
+          <p class="offer-desc">Antivirus deployment, patch management, software updates, and security audits to keep your systems protected.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AMC plans -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">AMC Plans</p>
+      <h2 class="svc-h2" style="text-align:center;">What an AMC includes</h2>
+      <p class="svc-lead" style="text-align:center; margin-left:auto; margin-right:auto; margin-bottom:var(--sp-6);">Our AMC contracts are built for businesses who want reliable IT without hiring a full-time team.</p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5);">
+        {[
+          {
+            name: 'Basic',
+            ideal: 'Up to 10 devices',
+            features: ['Quarterly on-site visits', 'Remote support (business hours)', 'Hardware health checks', 'Software updates', 'Email ticket support'],
+          },
+          {
+            name: 'Standard',
+            ideal: '10 to 30 devices',
+            features: ['Monthly on-site visits', 'Remote support (extended hours)', 'Network monitoring', 'Patch management', 'Priority response: 4 hours', 'Antivirus management'],
+            highlight: true,
+          },
+          {
+            name: 'Enterprise',
+            ideal: '30+ devices or servers',
+            features: ['Fortnightly on-site visits', 'Remote support (all hours)', 'Server monitoring', 'Backup verification', 'Priority response: 2 hours', 'Dedicated account manager'],
+          },
+        ].map(({ name, ideal, features, highlight }) => (
+          <div style={`background:${highlight ? 'var(--primary)' : 'var(--surface)'}; border:1px solid ${highlight ? 'var(--primary)' : 'var(--border)'}; border-radius:var(--radius-lg); padding:var(--sp-5);`}>
+            <h3 style={`font-size:20px; font-weight:800; font-family:var(--font-display); margin-bottom:4px; color:${highlight ? '#fff' : 'var(--text-primary)'};`}>{name}</h3>
+            <p style={`font-size:13px; margin-bottom:var(--sp-4); color:${highlight ? 'rgba(255,255,255,.75)' : 'var(--text-muted)'};`}>{ideal}</p>
+            <ul style="display:flex; flex-direction:column; gap:10px;">
+              {features.map(f => (
+                <li style={`display:flex; align-items:flex-start; gap:8px; font-size:14px; color:${highlight ? 'rgba(255,255,255,.9)' : 'var(--text-secondary)'};`}>
+                  <svg width="14" height="14" viewBox="0 0 12 12" fill="none" style="flex-shrink:0; margin-top:2px;">
+                    <circle cx="6" cy="6" r="6" fill={highlight ? 'rgba(255,255,255,.25)' : 'var(--primary-light)'}/>
+                    <path d="M3 6l2 2 4-4" stroke={highlight ? '#fff' : 'var(--primary)'} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p style="text-align:center; margin-top:var(--sp-5); font-size:14px; color:var(--text-muted);">Pricing is based on device count and location in Pune. Contact us for a quote based on your specific setup.</p>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="svc-section">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">How It Works</p>
+      <h2 class="svc-h2" style="text-align:center;">Getting started with AMC</h2>
+      <p class="svc-lead" style="text-align:center; margin-left:auto; margin-right:auto; margin-bottom:var(--sp-7);">We audit your current setup before recommending a plan. No guesswork.</p>
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4 class="step-title">IT Audit</h4>
+          <p class="step-desc">We visit and document your devices, network, and existing software. Takes 1 to 2 hours for most offices.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4 class="step-title">Plan and Quote</h4>
+          <p class="step-desc">We present an AMC plan that matches your size, hours, and budget. No pressure to buy the largest plan.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4 class="step-title">Onboarding</h4>
+          <p class="step-desc">We set up remote tools, document your network, and resolve any outstanding issues from the audit.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <h4 class="step-title">Ongoing Support</h4>
+          <p class="step-desc">Call, WhatsApp, or email us for any IT issue. We track, respond, and close tickets within the agreed SLA.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="svc-section-alt">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">FAQ</p>
+      <h2 class="svc-h2" style="text-align:center; margin-bottom:var(--sp-6);">Common questions</h2>
+      <div class="faq-list">
+        {[
+          ['What is included in on-site visits?', 'On-site visits include hardware checks, cleaning, software updates, and fixing any pending issues. We document each visit and share a report.'],
+          ['Can we get support for a single issue without an AMC?', 'Yes. We offer per-incident on-site and remote support without a contract. AMC contracts offer better pricing for businesses with ongoing needs.'],
+          ['Do you support Mac computers?', 'We support Macs for most software and network issues. For hardware repairs, we handle screen, battery, and keyboard. Contact us to confirm for specific models.'],
+          ['What is the response time for critical issues?', 'AMC contracts include a defined SLA. For critical issues like a server down, our Standard and Enterprise plans guarantee a 2 to 4 hour response.'],
+          ['Can you manage our office Wi-Fi?', 'Yes. We configure, monitor, and troubleshoot Wi-Fi networks, including access point placement, SSID management, and guest network setup.'],
+          ['Do you handle software licensing?', 'We can advise on, procure, and deploy software licences for Windows, Office 365, antivirus, and other business software.'],
+        ].map(([q, a]) => (
+          <div class="faq-item">
+            <p class="faq-q">{q}</p>
+            <p class="faq-a">{a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<style>
+  @media (max-width: 768px) {
+    section > .container > div[style*="grid-template-columns:repeat(3"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

@@ -1,0 +1,166 @@
+---
+const services = [
+  {
+    icon: '🖥️',
+    title: 'Device Repair',
+    tagline: 'Laptops · Desktops · Printers',
+    href: '/services/device-repair',
+    bullets: [
+      'Screen replacement (all brands)',
+      'Motherboard and charging port repair',
+      'OS reinstall with data backup before repair',
+      '6-month warranty, genuine parts',
+    ],
+    color: '#E3F2FD',
+  },
+  {
+    icon: '📡',
+    title: 'CCTV & Surveillance',
+    tagline: 'HD · IP · DVR/NVR Systems',
+    href: '/services/cctv-surveillance',
+    bullets: [
+      'Full site survey and camera placement design',
+      'DVR/NVR setup with remote viewing config',
+      'Indoor/outdoor IR night vision cameras',
+      'AMC contracts available',
+    ],
+    color: '#E8F5E9',
+  },
+  {
+    icon: '🔐',
+    title: 'Biometric & Access Control',
+    tagline: 'Attendance · Entry Systems',
+    href: '/services/biometric-access',
+    bullets: [
+      'Fingerprint and face-recognition terminals',
+      'Door access controllers',
+      'Payroll software integration',
+      'On-site installation and staff training',
+    ],
+    color: '#FFF3E0',
+  },
+  {
+    icon: '💻',
+    title: 'IT Support & AMC',
+    tagline: 'For Homes & Businesses',
+    href: '/services/it-support-amc',
+    bullets: [
+      'Annual Maintenance Contracts',
+      'On-site and remote helpdesk support',
+      'Network setup and server configuration',
+      'Patch management and endpoint security',
+    ],
+    color: '#F3E5F5',
+  },
+  {
+    icon: '🌐',
+    title: 'Web & Digital Services',
+    tagline: 'Websites · SEO · Meta Ads',
+    href: '/services/web-digital',
+    bullets: [
+      'Business website design and e-commerce stores',
+      'Google SEO and Meta Ads management',
+      'Marketplace onboarding (Amazon, Flipkart)',
+      'Monthly performance reporting',
+    ],
+    color: '#E8EAF6',
+  },
+  {
+    icon: '🔧',
+    title: 'Hardware Sales & Upgrades',
+    tagline: 'RAM · SSD · Accessories',
+    href: '/services/hardware-sales',
+    bullets: [
+      'Certified genuine components',
+      'Upgrade consultation and installation included',
+      'Bulk procurement for offices',
+      'All brands: Intel, AMD, Kingston, Seagate',
+    ],
+    color: '#E0F7FA',
+  },
+];
+---
+
+<style>
+  .services-section { padding: var(--sp-6) 0; }
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-5);
+    box-shadow: var(--shadow-card);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .service-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-raise); }
+  .service-icon {
+    width: 52px; height: 52px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: var(--sp-4);
+    flex-shrink: 0;
+  }
+  .service-title { font-size: 20px; font-weight: 700; margin-bottom: var(--sp-1); font-family: var(--font-display); }
+  .service-tagline { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: var(--sp-4); }
+  .service-bullets { display: flex; flex-direction: column; gap: var(--sp-2); flex: 1; }
+  .service-bullet {
+    display: flex; align-items: flex-start; gap: var(--sp-2);
+    font-size: 14px; color: var(--text-secondary);
+  }
+  .service-bullet::before {
+    content: '›';
+    color: var(--primary);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .service-link {
+    margin-top: var(--sp-4);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: gap 150ms;
+  }
+  .service-link:hover { gap: 8px; }
+</style>
+
+<section class="services-section" id="services" aria-label="Our Services">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:var(--sp-5);" class="fade-up">
+      <p class="eyebrow">What We Do</p>
+      <h2 class="section-title">Complete IT Solutions in Pune</h2>
+      <p class="lead" style="max-width:600px; margin:0 auto;">
+        From device repair to enterprise CCTV, we handle the full range of technology needs for homes and businesses.
+      </p>
+    </div>
+
+    <div class="grid-3">
+      {services.map((service, i) => (
+        <article
+          class="service-card fade-up"
+          style={`transition-delay:${(i % 3) * 80}ms`}
+          aria-label={service.title}
+        >
+          <div class="service-icon" style={`background:${service.color};`}>
+            {service.icon}
+          </div>
+          <h3 class="service-title">{service.title}</h3>
+          <p class="service-tagline">{service.tagline}</p>
+          <ul class="service-bullets" role="list">
+            {service.bullets.map(b => (
+              <li class="service-bullet">{b}</li>
+            ))}
+          </ul>
+          <a href={service.href} class="service-link">
+            Learn More →
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

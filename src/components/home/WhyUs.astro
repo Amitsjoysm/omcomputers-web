@@ -1,0 +1,70 @@
+---
+const reasons = [
+  {
+    icon: '🔩',
+    title: 'Genuine & Certified Parts',
+    desc: 'No grey-market components; every repair backed by 6-month warranty on parts and labour.',
+  },
+  {
+    icon: '💬',
+    title: 'Transparent Pricing',
+    desc: 'Written quote before any work begins; no surprise charges or hidden fees.',
+  },
+  {
+    icon: '🛠️',
+    title: 'Experienced Technicians',
+    desc: '500+ repairs handled across all major brands: HP, Dell, Lenovo, ASUS, Apple, and more.',
+  },
+  {
+    icon: '📍',
+    title: 'Local & Reliable',
+    desc: 'Based in Pune; fast on-site response for homes and offices across the city.',
+  },
+];
+---
+
+<style>
+  .why-us { padding: var(--sp-9) 0; background: var(--surface-2); }
+  .why-card {
+    display: flex;
+    gap: var(--sp-4);
+    align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-5);
+    box-shadow: var(--shadow-card);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+  .why-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-raise); }
+  .why-icon {
+    width: 52px; height: 52px; flex-shrink: 0;
+    border-radius: var(--radius-md);
+    background: var(--primary-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .why-title { font-size: 17px; font-weight: 700; margin-bottom: var(--sp-1); font-family: var(--font-display); }
+  .why-desc  { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+</style>
+
+<section class="why-us" aria-label="Why choose OM Computers">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:var(--sp-5);" class="fade-up">
+      <p class="eyebrow">Why Us</p>
+      <h2 class="section-title">Why Choose OM Computers</h2>
+    </div>
+
+    <div class="grid-2">
+      {reasons.map((r, i) => (
+        <div class="why-card fade-up" style={`transition-delay:${(i % 2) * 100}ms`}>
+          <div class="why-icon">{r.icon}</div>
+          <div>
+            <h3 class="why-title">{r.title}</h3>
+            <p class="why-desc">{r.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

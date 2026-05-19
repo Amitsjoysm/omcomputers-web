@@ -1,0 +1,216 @@
+---
+import MobileNav from './MobileNav.tsx';
+
+const site = await import('../../content/settings/site.json').then(m => m.default).catch(() => ({
+  phone: '+91 98765 43210',
+}));
+
+const services = [
+  { icon: '🖥️', label: 'Device Repair',           sub: 'Laptops · Desktops · Printers',    href: '/services/device-repair' },
+  { icon: '📡', label: 'CCTV & Surveillance',      sub: 'HD · IP · DVR/NVR Systems',        href: '/services/cctv-surveillance' },
+  { icon: '🔐', label: 'Biometric & Access',        sub: 'Attendance · Entry Systems',        href: '/services/biometric-access' },
+  { icon: '💻', label: 'IT Support & AMC',          sub: 'For Homes & Businesses',            href: '/services/it-support-amc' },
+  { icon: '🌐', label: 'Web & Digital Services',   sub: 'Websites · SEO · Meta Ads',         href: '/services/web-digital' },
+  { icon: '🔧', label: 'Hardware Sales',            sub: 'RAM · SSD · Accessories',           href: '/services/hardware-sales' },
+];
+
+const navLinks = [
+  { label: 'Services', href: '/#services', hasDropdown: true },
+  { label: 'Blog',     href: '/blog' },
+  { label: 'Parts',    href: '/parts' },
+  { label: 'Contact',  href: '/contact' },
+];
+---
+
+<style>
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    transition: border-color 200ms, backdrop-filter 200ms, box-shadow 200ms;
+  }
+  .navbar.scrolled {
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,.94);
+    box-shadow: 0 1px 12px rgba(0,0,0,.06);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 76px;
+    gap: var(--sp-5);
+  }
+  .nav-logo img { display: block; height: 62px; width: auto; max-width: 220px; object-fit: contain; }
+
+  /* ── Links ── */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .nav-item { position: relative; }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: var(--sp-2) var(--sp-3);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    transition: color 150ms, background 150ms;
+    white-space: nowrap;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link .chevron {
+    width: 14px; height: 14px;
+    transition: transform 200ms;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .nav-item:hover .chevron { transform: rotate(180deg); color: var(--primary); }
+
+  /* ── Services Dropdown ── */
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 420px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px rgba(30,136,229,.14);
+    padding: var(--sp-3);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-2);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(-6px);
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
+  }
+  /* arrow */
+  .dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px; height: 12px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    rotate: 45deg;
+  }
+  .nav-item:hover .dropdown,
+  .nav-item:focus-within .dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3);
+    border-radius: var(--radius-md);
+    transition: background 150ms;
+    text-decoration: none;
+    color: inherit;
+  }
+  .dropdown-item:hover { background: var(--primary-light); }
+  .dropdown-icon {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+    transition: background 150ms;
+  }
+  .dropdown-item:hover .dropdown-icon { background: var(--primary-light); }
+  .dropdown-label { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+  .dropdown-sub   { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── Actions ── */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+
+  @media (max-width: 960px) {
+    .nav-links { display: none; }
+    .nav-actions .btn-outline { display: none; }
+  }
+  @media (max-width: 600px) {
+    .nav-inner { height: 64px; }
+    .nav-logo img { height: 52px; }
+    .nav-actions .btn-primary { padding: 8px 12px; font-size: 12px; }
+  }
+</style>
+
+<nav class="navbar" id="main-nav" aria-label="Main navigation">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="OM Computers - Home">
+        <img src="/logo.png" alt="OM Computers" height="62" width="auto" />
+      </a>
+
+      <ul class="nav-links" role="list">
+        {navLinks.map(link => (
+          <li class="nav-item">
+            {link.hasDropdown ? (
+              <>
+                <a href={link.href} class="nav-link" aria-haspopup="true">
+                  {link.label}
+                  <svg class="chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </a>
+                <div class="dropdown" role="menu">
+                  {services.map(s => (
+                    <a href={s.href} class="dropdown-item" role="menuitem">
+                      <span class="dropdown-icon">{s.icon}</span>
+                      <span>
+                        <span class="dropdown-label">{s.label}</span>
+                        <span class="dropdown-sub">{s.sub}</span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <a href={link.href} class="nav-link">{link.label}</a>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <div class="nav-actions">
+        <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="btn-outline" style="font-size:13px; padding:8px 16px;">
+          📞 Call Us
+        </a>
+        <a href="/contact" class="btn-primary" style="font-size:13px; padding:8px 16px;">
+          Get Quote
+        </a>
+        <MobileNav client:load links={navLinks} services={services} phone={site.phone} />
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  (function () {
+    const nav = document.getElementById('main-nav');
+    if (!nav) return;
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>

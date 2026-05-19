@@ -1,0 +1,197 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow: string;
+  heading: string;
+  subheading: string;
+  heroIcon: string;
+  heroBg?: string;
+}
+
+const { title, description, eyebrow, heading, subheading, heroIcon, heroBg = 'var(--surface-2)' } = Astro.props;
+
+const site = await import('../content/settings/site.json').then(m => m.default).catch(() => ({
+  whatsapp: '919876543210',
+  phone: '+91 98765 43210',
+}));
+---
+
+<BaseLayout title={`${title} | OM Computers Pune`} description={description}>
+  <Navbar />
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section style={`background:${heroBg}; padding:var(--sp-6) 0; border-bottom:1px solid var(--border);`}>
+      <div class="container">
+        <div class="hero-inner">
+          <div>
+            <p class="eyebrow">{eyebrow}</p>
+            <h1 class="service-h1">{heading}</h1>
+            <p class="lead" style="max-width:520px;">{subheading}</p>
+            <div class="hero-actions">
+              <a
+                href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hi OM Computers! I want to enquire about ${title}.`)}`}
+                target="_blank" rel="noopener"
+                class="btn-primary"
+              >
+                WhatsApp Us Now
+              </a>
+              <a href="/contact" class="btn-outline">Get a Free Quote</a>
+            </div>
+          </div>
+          <div class="hero-icon-wrap" aria-hidden="true">{heroIcon}</div>
+        </div>
+      </div>
+    </section>
+
+    <slot />
+
+    <!-- CTA Band -->
+    <section style="background:var(--primary); padding:var(--sp-5) 0; text-align:center;">
+      <div class="container">
+        <h2 style="color:#fff; font-size:clamp(22px,3vw,32px); font-weight:800; margin-bottom:var(--sp-3);">
+          Ready to get started?
+        </h2>
+        <p style="color:rgba(255,255,255,.85); font-size:16px; margin-bottom:var(--sp-5);">
+          Call us, WhatsApp, or drop by our Pune office. We respond within 1 business hour.
+        </p>
+        <div style="display:flex; gap:var(--sp-3); justify-content:center; flex-wrap:wrap;">
+          <a
+            href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hi OM Computers! I need help with ${title}.`)}`}
+            target="_blank" rel="noopener"
+            style="background:#fff; color:var(--primary); font-weight:700; padding:12px 28px; border-radius:var(--radius-sm); font-size:15px; border:2px solid #fff; display:inline-flex; align-items:center; gap:8px;"
+          >
+            WhatsApp Us
+          </a>
+          <a
+            href="/contact"
+            style="background:transparent; color:#fff; font-weight:700; padding:12px 28px; border-radius:var(--radius-sm); font-size:15px; border:2px solid rgba(255,255,255,.6); display:inline-flex; align-items:center; gap:8px;"
+          >
+            Contact Form
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-6);
+  }
+  .service-h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    font-family: var(--font-display);
+    margin: var(--sp-2) 0 var(--sp-3);
+    color: var(--text-primary);
+  }
+  .hero-actions {
+    display: flex;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-top: var(--sp-5);
+  }
+  .hero-icon-wrap {
+    font-size: 100px;
+    line-height: 1;
+    flex-shrink: 0;
+    opacity: .85;
+  }
+
+  /* Section headings inside slot */
+  :global(.svc-section) { padding: var(--sp-6) 0; }
+  :global(.svc-section-alt) { padding: var(--sp-6) 0; background: var(--surface-2); }
+  :global(.svc-h2) {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700;
+    font-family: var(--font-display);
+    color: var(--text-primary);
+    margin-bottom: var(--sp-2);
+  }
+  :global(.svc-lead) {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--sp-6);
+    max-width: 640px;
+  }
+
+  /* Offer cards */
+  :global(.offer-grid) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-4);
+  }
+  :global(.offer-card) {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-5);
+    box-shadow: var(--shadow-card);
+    transition: transform 200ms, box-shadow 200ms;
+  }
+  :global(.offer-card:hover) { transform: translateY(-3px); box-shadow: var(--shadow-raise); }
+  :global(.offer-icon) {
+    font-size: 28px;
+    width: 52px; height: 52px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--sp-3);
+  }
+  :global(.offer-title) { font-size: 16px; font-weight: 700; font-family: var(--font-display); margin-bottom: var(--sp-2); }
+  :global(.offer-desc) { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Process steps */
+  :global(.steps-grid) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-4);
+  }
+  :global(.step-item) { text-align: center; }
+  :global(.step-num) {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto var(--sp-3);
+    font-family: var(--font-display);
+  }
+  :global(.step-title) { font-size: 15px; font-weight: 700; font-family: var(--font-display); margin-bottom: var(--sp-1); }
+  :global(.step-desc) { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* FAQ */
+  :global(.faq-list) { display: flex; flex-direction: column; gap: var(--sp-3); max-width: 760px; margin: 0 auto; }
+  :global(.faq-item) {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--sp-4) var(--sp-5);
+  }
+  :global(.faq-q) { font-size: 15px; font-weight: 700; font-family: var(--font-display); color: var(--text-primary); margin-bottom: var(--sp-2); }
+  :global(.faq-a) { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  @media (max-width: 900px) {
+    :global(.offer-grid) { grid-template-columns: repeat(2, 1fr); }
+    :global(.steps-grid) { grid-template-columns: repeat(2, 1fr); }
+    .hero-icon-wrap { font-size: 72px; }
+  }
+  @media (max-width: 600px) {
+    :global(.offer-grid), :global(.steps-grid) { grid-template-columns: 1fr; }
+    .hero-icon-wrap { display: none; }
+    .hero-inner { flex-direction: column; }
+  }
+</style>
