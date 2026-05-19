@@ -32,4 +32,6 @@ npm-debug.log*
 
 # code-review-graph
 .code-review-graph/
-_tools/impeccable-src/
+
+# Local dev tools — not needed for build
+_tools/
