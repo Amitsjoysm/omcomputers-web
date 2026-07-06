@@ -1,12 +1,7 @@
 ---
-const site = await import('../../content/settings/site.json').then(m => m.default).catch(() => ({
-  phone: '+91 98765 43210',
-  whatsapp: '919876543210',
-  email: 'info@omcomputers.co',
-  address: 'Pune, Maharashtra',
-  openHours: 'Monday to Saturday, 9 AM – 7 PM',
-}));
+import { getSettings } from '../../lib/content';
 
+const site = await getSettings();
 const year = new Date().getFullYear();
 ---
 
@@ -22,7 +17,7 @@ const year = new Date().getFullYear();
     gap: var(--sp-7);
     margin-bottom: var(--sp-7);
   }
-  .footer-logo img { height: 40px; filter: brightness(0) invert(1); margin-bottom: var(--sp-3); }
+  .footer-logo img { height: 48px; margin-bottom: var(--sp-3); }
   .footer-tagline { font-size: 14px; line-height: 1.6; color: #A0AEC0; max-width: 260px; }
   .footer-col h4 { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; margin-bottom: var(--sp-4); font-family: var(--font-display); }
   .footer-col ul { display: flex; flex-direction: column; gap: var(--sp-2); }
@@ -92,7 +87,6 @@ const year = new Date().getFullYear();
           <li><a href="/blog">Blog</a></li>
           <li><a href="/parts">Parts List</a></li>
           <li><a href="/contact">Contact</a></li>
-          <li><a href="/keystatic">Admin</a></li>
         </ul>
       </div>
 

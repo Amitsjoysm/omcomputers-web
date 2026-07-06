@@ -1,18 +1,21 @@
 ---
-import { getCollection } from 'astro:content';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import { getPublishedPostBySlug, listPublishedPosts } from '../../lib/content';
+import { renderMarkdown } from '../../lib/markdown';
 
-export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => data.published);
-  return posts.map(post => ({ params: { slug: post.slug }, props: { post } }));
-}
+const { slug } = Astro.params;
+const post = slug ? await getPublishedPostBySlug(slug) : null;
+if (!post) return Astro.redirect('/blog');
 
-const { post } = Astro.props;
-const { Content } = await post.render();
-
-const bodyText = post.body ?? '';
-const wordCount = bodyText.split(/\s+/).filter(Boolean).length;
+const html = renderMarkdown(post.body);
+const wordCount = post.body.split(/\s+/).filter(Boolean).length;
 const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+// Related posts: shared tags, fall back to most recent.
+const all = await listPublishedPosts();
+const related = all.filter(p => p.slug !== post.slug && p.data.tags.some(t => post.data.tags.includes(t)));
+const fallback = all.filter(p => p.slug !== post.slug);
+const relatedPosts = (related.length >= 3 ? related : fallback).slice(0, 3);
 ---
 
 <BlogPostLayout
@@ -21,8 +24,8 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
   tags={post.data.tags}
   publishDate={post.data.publishDate}
   readTime={readTime}
-  coverImage={post.data.coverImage as any}
+  coverImage={post.data.coverImage}
   slug={post.slug}
->
-  <Content />
-</BlogPostLayout>
+  contentHtml={html}
+  relatedPosts={relatedPosts}
+/>

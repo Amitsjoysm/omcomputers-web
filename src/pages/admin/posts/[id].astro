@@ -1,0 +1,48 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import PostForm from '../../../components/admin/PostForm.astro';
+import { getPostById, updatePost, slugExists } from '../../../lib/content';
+import { parsePostForm, requestTooLarge, storeUpload } from '../../../lib/admin-forms';
+
+const id = Number(Astro.params.id);
+if (!Number.isInteger(id) || id <= 0) return Astro.redirect('/admin/posts');
+
+let post = await getPostById(id);
+if (!post) return Astro.redirect('/admin/posts');
+
+let error = '';
+let uploadedImageUrl: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  if (requestTooLarge(Astro.request)) {
+    error = 'Upload too large — images must be under 5 MB.';
+  } else {
+    const form = await Astro.request.formData();
+    const action = form.get('action');
+
+    if (action === 'upload-image') {
+      const upload = await storeUpload(form.get('inlineImage'));
+      if (upload.error) error = upload.error;
+      else uploadedImageUrl = upload.url;
+    } else {
+      const parsed = await parsePostForm(form, post.data.coverImage?.src ?? null);
+      if (parsed.error) {
+        error = parsed.error;
+      } else if (await slugExists(parsed.input!.slug, id)) {
+        error = `A post with the slug "${parsed.input!.slug}" already exists — choose a different slug.`;
+      } else {
+        await updatePost(id, parsed.input!);
+        return Astro.redirect(`/admin/posts/${id}?saved=1`);
+      }
+    }
+    post = (await getPostById(id))!;
+  }
+}
+
+const saved = Astro.url.searchParams.has('saved');
+---
+
+<AdminLayout title={`Edit: ${post.data.title}`} active="posts">
+  <h1 class="admin-h1">Edit post</h1>
+  <PostForm post={post} error={error} saved={saved} uploadedImageUrl={uploadedImageUrl} />
+</AdminLayout>

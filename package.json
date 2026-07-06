@@ -1,23 +1,26 @@
 {
   "name": "omcomputers-web",
   "version": "1.0.0",
-  "description": "OM Computers production website — Astro + Keystatic",
+  "description": "OM Computers production website — Astro + MySQL, self-hosted /admin panel",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "start": "node ./dist/server/entry.mjs",
     "setup": "node scripts/favicons.mjs && npx astro sync",
     "astro": "astro"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
-    "@astrojs/mdx": "^3.1.9",
-    "@astrojs/netlify": "^5.5.0",
+    "@astrojs/node": "^8.3.4",
     "@astrojs/react": "^3.6.0",
     "@astrojs/sitemap": "^3.2.0",
-    "@keystatic/astro": "^5.0.0",
-    "@keystatic/core": "^0.5.35",
     "astro": "^4.16.0",
+    "marked": "^18.0.5",
     "motion": "^12.38.0",
+    "mysql2": "^3.22.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

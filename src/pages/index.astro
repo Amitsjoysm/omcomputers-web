@@ -10,11 +10,9 @@ import HowItWorks from '../components/home/HowItWorks.astro';
 import Testimonials from '../components/home/Testimonials.astro';
 import Faq from '../components/home/Faq.astro';
 import CtaBand from '../components/home/CtaBand.astro';
+import { getSettings } from '../lib/content';
 
-const site = await import('../content/settings/site.json').then(m => m.default).catch(() => ({
-  phone: '+91 98765 43210',
-  whatsapp: '919876543210',
-}));
+const site = await getSettings();
 ---
 
 <BaseLayout

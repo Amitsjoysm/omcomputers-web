@@ -2,15 +2,34 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Navbar from '../../components/layout/Navbar.astro';
 import Footer from '../../components/layout/Footer.astro';
+import { getSettings, createMessage } from '../../lib/content';
 
-const site = await import('../../content/settings/site.json').then(m => m.default).catch(() => ({
-  phone: '+91 98765 43210',
-  whatsapp: '919876543210',
-  email: 'info@omcomputers.co',
-  address: 'Pune, Maharashtra',
-  openHours: 'Monday to Saturday, 9 AM – 7 PM',
-  googleMaps: '',
-}));
+const site = await getSettings();
+
+let sent = false;
+let formError = '';
+let old = { name: '', phone: '', service: '', message: '' };
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  // Honeypot: real users leave this empty; bots fill it.
+  if (String(form.get('company') ?? '') === '') {
+    const name = String(form.get('name') ?? '').trim();
+    const phone = String(form.get('phone') ?? '').trim();
+    const service = String(form.get('service') ?? '').trim();
+    const message = String(form.get('message') ?? '').trim();
+    old = { name, phone, service, message };
+    if (!name || !phone) {
+      formError = 'Please enter your name and phone number.';
+    } else {
+      await createMessage({ name, phone, service, message });
+      sent = true;
+      old = { name: '', phone: '', service: '', message: '' };
+    }
+  } else {
+    sent = true; // silently accept bots
+  }
+}
 ---
 
 <BaseLayout
@@ -110,61 +129,72 @@ const site = await import('../../content/settings/site.json').then(m => m.defaul
               Send Us a Message
             </h2>
 
-            <form
-              name="contact"
-              method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              style="display:flex; flex-direction:column; gap:var(--sp-4);"
-            >
-              <input type="hidden" name="form-name" value="contact" />
-              <p style="display:none;"><input name="bot-field" /></p>
-
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);">
-                <div class="form-group">
-                  <label for="name" class="form-label">Full Name *</label>
-                  <input type="text" id="name" name="name" required class="form-input" placeholder="Your name" autocomplete="name" />
+            {sent ? (
+              <div style="background:#E8F8EF; border:1px solid #BDEBD2; color:#1A7A43; border-radius:var(--radius-md); padding:var(--sp-5); text-align:center;">
+                <div style="font-size:40px; margin-bottom:var(--sp-2);">✅</div>
+                <h3 style="font-family:var(--font-display); margin-bottom:var(--sp-2);">Thank you — message received!</h3>
+                <p style="font-size:14px;">We’ll get back to you within 1 business hour. For anything urgent, call or WhatsApp us directly.</p>
+              </div>
+            ) : (
+              <form
+                name="contact"
+                method="POST"
+                style="display:flex; flex-direction:column; gap:var(--sp-4);"
+              >
+                {formError && (
+                  <p style="background:#FDECEC; color:#B42318; border:1px solid #F5C6C6; padding:var(--sp-3); border-radius:var(--radius-sm); font-size:14px;">{formError}</p>
+                )}
+                <!-- Honeypot: hidden from people, tempting to bots -->
+                <div style="position:absolute; left:-5000px;" aria-hidden="true">
+                  <input type="text" name="company" tabindex="-1" autocomplete="off" />
                 </div>
-                <div class="form-group">
-                  <label for="phone" class="form-label">Phone Number *</label>
-                  <input type="tel" id="phone" name="phone" required class="form-input" placeholder="+91 XXXXX XXXXX" autocomplete="tel" />
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);">
+                  <div class="form-group">
+                    <label for="name" class="form-label">Full Name *</label>
+                    <input type="text" id="name" name="name" required class="form-input" placeholder="Your name" autocomplete="name" value={old.name} />
+                  </div>
+                  <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required class="form-input" placeholder="+91 XXXXX XXXXX" autocomplete="tel" value={old.phone} />
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label for="service" class="form-label">Service Required</label>
-                <select id="service" name="service" class="form-input">
-                  <option value="">Select a service...</option>
-                  <option value="Device Repair">Device Repair (Laptop / Desktop / Printer)</option>
-                  <option value="CCTV">CCTV Installation</option>
-                  <option value="Biometric">Biometric &amp; Access Control</option>
-                  <option value="IT Support">IT Support &amp; AMC</option>
-                  <option value="Web Services">Web &amp; Digital Services</option>
-                  <option value="Hardware">Hardware Sales &amp; Upgrades</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+                <div class="form-group">
+                  <label for="service" class="form-label">Service Required</label>
+                  <select id="service" name="service" class="form-input">
+                    <option value="">Select a service...</option>
+                    <option value="Device Repair" selected={old.service === 'Device Repair'}>Device Repair (Laptop / Desktop / Printer)</option>
+                    <option value="CCTV" selected={old.service === 'CCTV'}>CCTV Installation</option>
+                    <option value="Biometric" selected={old.service === 'Biometric'}>Biometric &amp; Access Control</option>
+                    <option value="IT Support" selected={old.service === 'IT Support'}>IT Support &amp; AMC</option>
+                    <option value="Web Services" selected={old.service === 'Web Services'}>Web &amp; Digital Services</option>
+                    <option value="Hardware" selected={old.service === 'Hardware'}>Hardware Sales &amp; Upgrades</option>
+                    <option value="Other" selected={old.service === 'Other'}>Other</option>
+                  </select>
+                </div>
 
-              <div class="form-group">
-                <label for="message" class="form-label">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  class="form-input"
-                  placeholder="Describe your issue or requirements..."
-                  style="resize:vertical; min-height:120px;"
-                ></textarea>
-              </div>
+                <div class="form-group">
+                  <label for="message" class="form-label">Message</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    class="form-input"
+                    placeholder="Describe your issue or requirements..."
+                    style="resize:vertical; min-height:120px;"
+                  >{old.message}</textarea>
+                </div>
 
-              <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:14px; font-size:16px;">
-                Send Message →
-              </button>
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:14px; font-size:16px;">
+                  Send Message →
+                </button>
 
-              <p style="font-size:13px; color:var(--text-muted); text-align:center;">
-                We respond within 1 business hour. Your information is never shared.
-              </p>
-            </form>
+                <p style="font-size:13px; color:var(--text-muted); text-align:center;">
+                  We respond within 1 business hour. Your information is never shared.
+                </p>
+              </form>
+            )}
           </div>
         </div>
       </div>

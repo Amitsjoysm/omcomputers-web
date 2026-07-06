@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { getSettings } from '../lib/content';
 
 export interface Props {
   title: string;
@@ -15,16 +16,8 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site || 'https://omcomputers.co');
 
-// Load site settings
-let siteSettings = {
-  phone: '+91 98765 43210',
-  email: 'info@omcomputers.co',
-  address: 'Pune, Maharashtra',
-};
-try {
-  const raw = await import('../content/settings/site.json');
-  siteSettings = raw.default as typeof siteSettings;
-} catch (_) {}
+// Load site settings from the database
+const siteSettings = await getSettings();
 ---
 
 <!DOCTYPE html>

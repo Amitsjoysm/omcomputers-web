@@ -1,0 +1,55 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { listAllPosts, deletePost } from '../../../lib/content';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  if (form.get('action') === 'delete') {
+    const id = Number(form.get('id'));
+    if (Number.isInteger(id) && id > 0) await deletePost(id);
+    return Astro.redirect('/admin/posts?deleted=1');
+  }
+}
+
+const posts = await listAllPosts();
+const deleted = Astro.url.searchParams.has('deleted');
+---
+
+<AdminLayout title="Blog Posts" active="posts">
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:var(--sp-4); flex-wrap:wrap; margin-bottom:var(--sp-4);">
+    <h1 class="admin-h1" style="margin:0;">Blog Posts</h1>
+    <a href="/admin/posts/new" class="btn-primary">✍ New post</a>
+  </div>
+
+  {deleted && <p class="flash flash-ok">Post deleted.</p>}
+
+  <div class="admin-card">
+    {posts.length === 0 ? (
+      <p style="color:var(--text-muted); font-size:14px;">No posts yet.</p>
+    ) : (
+      <table class="admin-table">
+        <thead><tr><th>Title</th><th>Tags</th><th>Date</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          {posts.map(post => (
+            <tr>
+              <td>
+                <a href={`/admin/posts/${post.id}`} style="color:var(--primary); font-weight:600;">{post.data.title}</a>
+                {post.published && <a href={`/blog/${post.slug}`} target="_blank" rel="noopener" style="font-size:12px; color:var(--text-muted); margin-left:8px;">view ↗</a>}
+              </td>
+              <td>{post.data.tags.slice(0, 3).map(tag => <span class="badge badge-muted" style="margin-right:4px;">{tag}</span>)}</td>
+              <td style="white-space:nowrap;">{post.data.publishDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+              <td>{post.published ? <span class="badge badge-success">Published</span> : <span class="badge badge-warning">Draft</span>}</td>
+              <td style="text-align:right;">
+                <form method="POST" onsubmit="return confirm('Delete this post permanently?');" style="display:inline;">
+                  <input type="hidden" name="action" value="delete" />
+                  <input type="hidden" name="id" value={post.id} />
+                  <button type="submit" class="btn-danger" style="padding:4px 10px; font-size:12px;">Delete</button>
+                </form>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>

@@ -1,9 +1,8 @@
 ---
 import MobileNav from './MobileNav.tsx';
+import { getSettings } from '../../lib/content';
 
-const site = await import('../../content/settings/site.json').then(m => m.default).catch(() => ({
-  phone: '+91 98765 43210',
-}));
+const site = await getSettings();
 
 const services = [
   { icon: '🖥️', label: 'Device Repair',           sub: 'Laptops · Desktops · Printers',    href: '/services/device-repair' },

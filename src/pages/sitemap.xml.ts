@@ -1,10 +1,10 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import { listPublishedPosts } from '../lib/content';
 
 export const GET: APIRoute = async ({ site }) => {
   const base = site?.origin ?? 'https://omcomputers.co';
 
-  const posts = await getCollection('blog', ({ data }) => data.published);
+  const posts = await listPublishedPosts();
 
   const staticPages = [
     { path: '',                             priority: '1.0' },

@@ -4,7 +4,7 @@ import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
 import PostCard from '../components/blog/PostCard.astro';
 import CopyLink from '../components/blog/CopyLink.tsx';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import type { PostEntry } from '../lib/content';
 
 export interface Props {
   title: string;
@@ -12,21 +12,13 @@ export interface Props {
   tags: string[];
   publishDate: Date;
   readTime: number;
-  coverImage?: ImageMetadata;
+  coverImage?: { src: string };
   slug: string;
+  contentHtml: string;
+  relatedPosts: PostEntry[];
 }
 
-const { title, excerpt, tags, publishDate, readTime, coverImage, slug } = Astro.props;
-
-const allPosts = await getCollection('blog', ({ data }) => data.published);
-const related = allPosts
-  .filter(p => p.slug !== slug && p.data.tags.some(t => tags.includes(t)))
-  .slice(0, 3);
-const fallback = allPosts
-  .filter(p => p.slug !== slug)
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
-  .slice(0, 3);
-const relatedPosts = related.length >= 3 ? related : fallback;
+const { title, excerpt, tags, publishDate, readTime, coverImage, slug, contentHtml, relatedPosts } = Astro.props;
 
 const formattedDate = publishDate.toLocaleDateString('en-IN', {
   day: 'numeric', month: 'long', year: 'numeric',
@@ -88,14 +80,12 @@ const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(title + ': ' + Ast
   <article style="padding: var(--sp-8) 0;">
     <div class="container">
       {coverImage
-        ? <img class="cover-img" src={coverImage.src} alt={title} width={coverImage.width} height={coverImage.height} />
+        ? <img class="cover-img" src={coverImage.src} alt={title} />
         : <div class="cover-placeholder"><span style="font-size:48px; opacity:.4;">📸</span></div>
       }
 
       <div class="prose-wrap">
-        <div class="prose-om">
-          <slot />
-        </div>
+        <div class="prose-om" set:html={contentHtml}></div>
 
         <div class="share-row">
           <span>Share this post:</span>

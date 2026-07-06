@@ -7,7 +7,7 @@ interface Post {
     excerpt: string;
     tags: string[];
     publishDate: string;
-    coverImage?: { src: string; width: number; height: number };
+    coverImage?: { src: string; width?: number; height?: number };
   };
 }
 

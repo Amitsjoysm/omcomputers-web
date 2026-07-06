@@ -1,0 +1,85 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { listCategoriesWithItems, createCategory, renameCategory, deleteCategory } from '../../../lib/content';
+
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = form.get('action');
+  try {
+    if (action === 'add-category') {
+      const name = String(form.get('name') ?? '').trim();
+      if (!name) error = 'Category name is required.';
+      else {
+        const id = await createCategory(name);
+        return Astro.redirect(`/admin/prices/${id}`);
+      }
+    } else if (action === 'rename-category') {
+      const id = Number(form.get('id'));
+      const name = String(form.get('name') ?? '').trim();
+      if (name && Number.isInteger(id)) await renameCategory(id, name);
+      return Astro.redirect('/admin/prices');
+    } else if (action === 'delete-category') {
+      const id = Number(form.get('id'));
+      if (Number.isInteger(id)) await deleteCategory(id);
+      return Astro.redirect('/admin/prices?deleted=1');
+    }
+  } catch (e: any) {
+    error = e?.code === 'ER_DUP_ENTRY' ? 'A category with that name already exists.' : 'Something went wrong — please try again.';
+  }
+}
+
+const categories = await listCategoriesWithItems();
+const deleted = Astro.url.searchParams.has('deleted');
+---
+
+<AdminLayout title="Price List" active="prices">
+  <h1 class="admin-h1">Price List</h1>
+
+  {deleted && <p class="flash flash-ok">Category deleted.</p>}
+  {error && <p class="flash flash-err">{error}</p>}
+
+  <div class="admin-card">
+    {categories.length === 0 ? (
+      <p style="color:var(--text-muted); font-size:14px;">No categories yet — add one below.</p>
+    ) : (
+      <table class="admin-table">
+        <thead><tr><th>Category</th><th>Products</th><th style="width:340px;"></th></tr></thead>
+        <tbody>
+          {categories.map(cat => (
+            <tr>
+              <td><a href={`/admin/prices/${cat.id}`} style="color:var(--primary); font-weight:600;">{cat.data.category}</a></td>
+              <td>{cat.data.items.length}</td>
+              <td>
+                <div style="display:flex; gap:var(--sp-2); justify-content:flex-end; flex-wrap:wrap;">
+                  <a href={`/admin/prices/${cat.id}`} class="btn-outline" style="padding:6px 14px; font-size:13px;">Edit products</a>
+                  <form method="POST" style="display:inline-flex; gap:6px;">
+                    <input type="hidden" name="action" value="rename-category" />
+                    <input type="hidden" name="id" value={cat.id} />
+                    <input type="text" name="name" value={cat.data.category} style="width:130px; padding:6px 8px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:13px;" />
+                    <button type="submit" class="btn-outline" style="padding:6px 10px; font-size:13px;">Rename</button>
+                  </form>
+                  <form method="POST" onsubmit={`return confirm('Delete "${cat.data.category}" and all ${cat.data.items.length} products in it?');`} style="display:inline;">
+                    <input type="hidden" name="action" value="delete-category" />
+                    <input type="hidden" name="id" value={cat.id} />
+                    <button type="submit" class="btn-danger" style="padding:6px 10px; font-size:13px;">Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+
+  <div class="admin-card">
+    <h2 class="admin-h2">Add a category</h2>
+    <form method="POST" style="display:flex; gap:var(--sp-3); flex-wrap:wrap;">
+      <input type="hidden" name="action" value="add-category" />
+      <input type="text" name="name" required placeholder="e.g. RAM & Memory" style="flex:1; min-width:220px; padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:14px;" />
+      <button type="submit" class="btn-primary">Add category</button>
+    </form>
+  </div>
+</AdminLayout>

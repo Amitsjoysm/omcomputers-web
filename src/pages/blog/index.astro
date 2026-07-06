@@ -1,14 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Navbar from '../../components/layout/Navbar.astro';
 import Footer from '../../components/layout/Footer.astro';
 import TagFilter from '../../components/blog/TagFilter.tsx';
+import { listPublishedPosts } from '../../lib/content';
 
-const allPosts = await getCollection('blog', ({ data }) => data.published);
-const sorted = allPosts.sort((a, b) =>
-  b.data.publishDate.getTime() - a.data.publishDate.getTime()
-);
+const sorted = await listPublishedPosts();
 const allTags = [...new Set(sorted.flatMap(p => p.data.tags))].sort();
 
 // Serialize for React island
@@ -19,7 +16,7 @@ const postsForFilter = sorted.map(p => ({
     excerpt: p.data.excerpt,
     tags: p.data.tags,
     publishDate: p.data.publishDate.toISOString(),
-    coverImage: p.data.coverImage ? { src: p.data.coverImage.src, width: p.data.coverImage.width, height: p.data.coverImage.height } : undefined,
+    coverImage: p.data.coverImage ? { src: p.data.coverImage.src } : undefined,
   },
 }));
 ---

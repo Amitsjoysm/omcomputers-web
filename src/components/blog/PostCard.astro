@@ -1,8 +1,8 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import type { PostEntry } from '../../lib/content';
 
 export interface Props {
-  post: CollectionEntry<'blog'>;
+  post: PostEntry;
 }
 
 const { post } = Astro.props;
@@ -88,7 +88,7 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
 <a href={`/blog/${post.slug}`} class="post-card" aria-label={`Read: ${title}`}>
   <div class="cover-wrap">
     {coverImage
-      ? <img class="cover-img" src={coverImage.src} alt={title} width={coverImage.width} height={coverImage.height} loading="lazy" />
+      ? <img class="cover-img" src={coverImage.src} alt={title} loading="lazy" />
       : <span class="cover-placeholder">📝</span>
     }
   </div>

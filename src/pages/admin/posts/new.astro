@@ -1,0 +1,30 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import PostForm from '../../../components/admin/PostForm.astro';
+import { createPost, slugExists } from '../../../lib/content';
+import { parsePostForm, requestTooLarge } from '../../../lib/admin-forms';
+
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  if (requestTooLarge(Astro.request)) {
+    error = 'Upload too large — images must be under 5 MB.';
+  } else {
+    const form = await Astro.request.formData();
+    const parsed = await parsePostForm(form, null);
+    if (parsed.error) {
+      error = parsed.error;
+    } else if (await slugExists(parsed.input!.slug)) {
+      error = `A post with the slug "${parsed.input!.slug}" already exists — choose a different slug.`;
+    } else {
+      const id = await createPost(parsed.input!);
+      return Astro.redirect(`/admin/posts/${id}?saved=1`);
+    }
+  }
+}
+---
+
+<AdminLayout title="New Post" active="posts">
+  <h1 class="admin-h1">Write a new post</h1>
+  <PostForm error={error} />
+</AdminLayout>

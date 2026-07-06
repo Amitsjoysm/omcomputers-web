@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
+import { getSettings } from '../lib/content';
 
 interface Props {
   title: string;
@@ -15,10 +16,7 @@ interface Props {
 
 const { title, description, eyebrow, heading, subheading, heroIcon, heroBg = 'var(--surface-2)' } = Astro.props;
 
-const site = await import('../content/settings/site.json').then(m => m.default).catch(() => ({
-  whatsapp: '919876543210',
-  phone: '+91 98765 43210',
-}));
+const site = await getSettings();
 ---
 
 <BaseLayout title={`${title} | OM Computers Pune`} description={description}>

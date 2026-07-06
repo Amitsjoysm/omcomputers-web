@@ -1,0 +1,51 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { listMessages, markMessageRead, deleteMessage } from '../../lib/content';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = form.get('action');
+  const id = Number(form.get('id'));
+  if (Number.isInteger(id) && id > 0) {
+    if (action === 'read') await markMessageRead(id, true);
+    else if (action === 'unread') await markMessageRead(id, false);
+    else if (action === 'delete') await deleteMessage(id);
+  }
+  return Astro.redirect('/admin/messages');
+}
+
+const messages = await listMessages();
+const fmt = (d: Date) => d.toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+---
+
+<AdminLayout title="Enquiries" active="messages">
+  <h1 class="admin-h1">Enquiries</h1>
+  <p style="color:var(--text-secondary); font-size:14px; margin:-8px 0 var(--sp-4);">
+    Messages sent through the website contact form.
+  </p>
+
+  {messages.length === 0 ? (
+    <div class="admin-card"><p style="color:var(--text-muted); font-size:14px;">No enquiries yet.</p></div>
+  ) : (
+    messages.map(m => (
+      <div class="admin-card" style={`padding:var(--sp-4); ${m.isRead ? 'opacity:.72;' : 'border-left:3px solid var(--primary);'}`}>
+        <div style="display:flex; justify-content:space-between; gap:var(--sp-3); flex-wrap:wrap; align-items:baseline;">
+          <div>
+            <strong style="font-family:var(--font-display); font-size:16px;">{m.name}</strong>
+            {!m.isRead && <span class="badge badge-primary" style="margin-left:8px;">New</span>}
+            {m.service && <span class="badge badge-muted" style="margin-left:6px;">{m.service}</span>}
+          </div>
+          <span style="font-size:12px; color:var(--text-muted);">{fmt(m.createdAt)}</span>
+        </div>
+        <div style="margin:var(--sp-2) 0; font-size:14px;">
+          📞 <a href={`tel:${m.phone.replace(/\s/g,'')}`} style="color:var(--primary); font-weight:600;">{m.phone}</a>
+        </div>
+        {m.message && <p style="font-size:14px; color:var(--text-secondary); line-height:1.6; white-space:pre-wrap;">{m.message}</p>}
+        <div style="display:flex; gap:var(--sp-2); margin-top:var(--sp-3);">
+          <form method="POST"><input type="hidden" name="id" value={m.id} /><input type="hidden" name="action" value={m.isRead ? 'unread' : 'read'} /><button type="submit" class="btn-outline" style="padding:5px 12px; font-size:13px;">{m.isRead ? 'Mark unread' : 'Mark read'}</button></form>
+          <form method="POST" onsubmit="return confirm('Delete this enquiry?');"><input type="hidden" name="id" value={m.id} /><input type="hidden" name="action" value="delete" /><button type="submit" class="btn-danger" style="padding:5px 12px; font-size:13px;">Delete</button></form>
+        </div>
+      </div>
+    ))
+  )}
+</AdminLayout>
