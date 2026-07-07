@@ -41,6 +41,7 @@ Hostinger account.
 - Hostinger **Business Web Hosting** plan (supports Node.js apps + MySQL)
 - Your domain added to Hostinger
 - The deployment zip: `omcomputers-web-hostinger-source.zip`
+  (or clone the GitHub repo: `https://github.com/Amitsjoysm/omcomputers-web` — private, main branch)
 
 ---
 
@@ -77,10 +78,12 @@ will type to log in.
 ## Step 3 — Create the Node.js web app
 
 1. In **hPanel** → **Websites** → **Add website** → **Web app (Node.js)**.
-2. Choose **Upload files (ZIP)** and upload
-   `omcomputers-web-hostinger-source.zip`.
-   *(You may also deploy from GitHub if you ever want to — it is optional and
-   not required.)*
+2. Choose one of:
+   - **Upload files (ZIP)** and upload `omcomputers-web-hostinger-source.zip`, **or**
+   - **Deploy from GitHub** and connect the private repo
+     `Amitsjoysm/omcomputers-web` (branch `main`) — this also lets Hostinger
+     auto-redeploy whenever new code is pushed to that branch. You'll need to
+     authorize Hostinger's GitHub App and grant it access to this repo.
 3. Hostinger auto-detects **Astro**. Confirm these settings:
    - **Build command:** `npm run build`
    - **Start command:** `npm run start`
@@ -151,6 +154,90 @@ Open your site and check:
 
 **Changing the password later:** edit the `ADMIN_PASSWORD` environment
 variable in hPanel and restart the app.
+
+---
+
+## ✅ Do / ❌ Don't
+
+**Do:**
+- ✅ Use the exact values from **Databases → MySQL** for `DB_HOST/NAME/USER/PASSWORD` — copy-paste them, don't retype.
+- ✅ Set `DB_HOST=localhost` (Hostinger's internal MySQL is not reachable via any external hostname on shared/Business plans).
+- ✅ Pick Node **20 or 22** in the app's Node.js version dropdown — Astro 4 requires Node ≥ 18.20, and the adapter used here is tested on 20/22.
+- ✅ Generate `ADMIN_SECRET` fresh with the PowerShell/openssl command in Step 2 — don't reuse a password or a short string.
+- ✅ Wait for the **first deploy** to finish fully before opening `/admin` — table creation happens on the first request and can take a few seconds.
+- ✅ Re-deploy (or restart the app) after changing **any** environment variable — Node reads them once at startup, so hPanel's save alone does not apply them until restart.
+- ✅ Keep `.env` **out** of anything you upload — it's already excluded from the zip; production config lives only in hPanel's Environment Variables screen.
+- ✅ Back up the database regularly (see Backups section below) — this is your only copy of blog posts, prices, and images.
+
+**Don't:**
+- ❌ Don't set `DB_HOST` to your domain name or a public IP — always `localhost` on Hostinger Business.
+- ❌ Don't skip the **Node.js version** selection — leaving it on an old default (e.g. 16) will fail the build with a cryptic engine error.
+- ❌ Don't hand-edit files inside `seed/` expecting it to update the live site — that folder is only read once, when the database is completely empty. Edit content in `/admin` instead.
+- ❌ Don't commit or upload a `.env` file with real secrets — set them in hPanel's environment variables UI only.
+- ❌ Don't use a short/weak `ADMIN_PASSWORD` — this single password protects your entire content database.
+- ❌ Don't forget to enable **Force HTTPS** — mixed content (favicons/images loading over HTTP) will show a browser warning.
+- ❌ Don't delete the MySQL database from hPanel while the app is still pointed at it — the site will go down immediately (500 errors) until it's recreated and env vars updated.
+- ❌ Don't run two Node apps against the **same** database with different `DB_NAME` typos — a small typo silently creates a second, empty, database-shaped app that looks broken.
+
+---
+
+## Common errors & how to fix them
+
+### "Application failed to start" / the app won't boot
+- **Cause:** usually a missing or wrong environment variable, or the wrong start command.
+- **Fix:** In hPanel → your app → **Logs**, look for the first error line (usually near the top of the crash). Confirm:
+  - Start command is exactly `npm run start`
+  - Build command is exactly `npm run build`
+  - All 9 environment variables from Step 3 are present (no typos in the *names*, not just the values)
+  - Re-deploy after fixing.
+
+### `ER_ACCESS_DENIED_ERROR` / "Access denied for user ... to database"
+- **Cause:** `DB_USER` / `DB_PASSWORD` don't match what hPanel created, or the user isn't assigned to that database.
+- **Fix:** hPanel → Databases → MySQL Databases → confirm the username is attached to the database (Hostinger sometimes requires an explicit "Add user to database" step). Re-copy the password (special characters sometimes get lost during manual retyping — copy-paste it).
+
+### `ECONNREFUSED 127.0.0.1:3306` or `ETIMEDOUT` connecting to MySQL
+- **Cause:** `DB_HOST` is wrong, or the MySQL service isn't in the same hosting account/plan.
+- **Fix:** Confirm `DB_HOST=localhost` and `DB_PORT=3306`. If you're on a plan where MySQL runs on a separate internal host, hPanel's database page will show the correct host — use that value instead.
+
+### 502 Bad Gateway / 503 Service Unavailable right after deploy
+- **Cause:** the app is still starting (creating tables + seeding on first boot can take 10–20 seconds), or it crashed.
+- **Fix:** Wait 30 seconds and refresh. If it persists, check **Logs** for a stack trace — most commonly a missing environment variable (see above).
+
+### Build fails with "Node engine mismatch" or `EBADENGINE`
+- **Cause:** the app's Node.js version is set below 20.
+- **Fix:** hPanel → your app → **Settings** → change Node.js version to `20` or `22`, then redeploy.
+
+### Build fails with `sharp` install errors
+- **Cause:** `sharp` (used only by the local `npm run setup` favicon script) sometimes fails to install prebuilt binaries on constrained build environments.
+- **Fix:** This does not affect the live site — `sharp` is a devDependency used only to *regenerate* favicons locally, not at runtime. If the Hostinger build step errors on it, you can ignore/remove it from `devDependencies` before uploading (favicons are already generated and included in `public/icons/`).
+
+### `/admin` shows "ADMIN_SECRET environment variable is not set"
+- **Cause:** `ADMIN_SECRET` (or `ADMIN_PASSWORD`) is missing from the app's environment variables, or the app wasn't restarted after adding it.
+- **Fix:** Add the variable in hPanel, then **restart/redeploy** the app — env vars only take effect on process start.
+
+### Logging in to `/admin` always says "Incorrect password"
+- **Cause:** `ADMIN_PASSWORD` in hPanel doesn't match what you're typing, or there's a trailing space copied into the env var field.
+- **Fix:** Re-enter the value in hPanel carefully (avoid pasting extra whitespace/newlines), restart the app, try again. If you're locked out after 8 attempts, wait 15 minutes (rate limit) or restart the app to reset the in-memory counter.
+
+### Image upload fails or hangs on a large photo
+- **Cause:** the built-in cap is 5 MB per image (`admin-forms.ts`); anything larger is rejected with a message, not a silent failure.
+- **Fix:** Compress the photo (any online image compressor, or resize to ~1600px wide) and re-upload.
+
+### Uploaded images / blog photos don't show up
+- **Cause:** rare, but can happen if `DB_NAME` was changed after some images were already uploaded to a *different* database.
+- **Fix:** Images are stored in the `images` table of whichever database the app is currently pointed at — make sure `DB_NAME` hasn't changed since the images were uploaded. If it has, restore the correct `DB_NAME` value.
+
+### Domain shows Hostinger's default "It works!" page instead of the site
+- **Cause:** DNS hasn't propagated yet, or the domain wasn't assigned to the Node.js app (it may still be pointed at the default Apache/LiteSpeed site).
+- **Fix:** hPanel → your Node.js app → **Domain** → confirm the domain is assigned there specifically, not just added to the account. DNS propagation can take up to 24–48 hours after nameserver changes (usually much faster in practice).
+
+### Favicon doesn't update after replacing the logo
+- **Cause:** browsers cache favicons aggressively.
+- **Fix:** Hard-refresh (`Ctrl+F5`), or open the site in a private/incognito window to confirm the new icon actually deployed.
+
+### Contact form submissions aren't appearing in "Enquiries"
+- **Cause:** almost always a false alarm — check you're looking at `/admin/messages` (not old Netlify Forms, which this build no longer uses at all).
+- **Fix:** Submit a real test enquiry from `/contact` and check `/admin/messages` immediately after; it should appear at the top instantly (no delay, no external service involved).
 
 ---
 
