@@ -40,8 +40,17 @@ Hostinger account.
 
 - Hostinger **Business Web Hosting** plan (supports Node.js apps + MySQL)
 - Your domain added to Hostinger
-- The deployment zip: `omcomputers-web-hostinger-source.zip`
-  (or clone the GitHub repo: `https://github.com/Amitsjoysm/omcomputers-web` — private, main branch)
+- The deployment zip: **`omcomputers-web-public-html.zip`** — this one
+  extracts flat, with `package.json` directly at the top level, ready to
+  drop straight into `public_html` (or clone the GitHub repo:
+  `https://github.com/Amitsjoysm/omcomputers-web` — private, `main` branch)
+
+> ⚠️ **Getting a "Forbidden" error after uploading?** Almost always caused
+> by the zip extracting into a nested subfolder so Hostinger can't find
+> `package.json` at the app root. See **`FIX-403-FORBIDDEN.md`** for the
+> full walkthrough — the short version is: use the flat zip above, and
+> confirm `public_html/package.json` exists directly (not one folder
+> deeper) after extracting.
 
 ---
 
@@ -79,7 +88,10 @@ will type to log in.
 
 1. In **hPanel** → **Websites** → **Add website** → **Web app (Node.js)**.
 2. Choose one of:
-   - **Upload files (ZIP)** and upload `omcomputers-web-hostinger-source.zip`, **or**
+   - **Upload files (ZIP)** and upload `omcomputers-web-public-html.zip`,
+     then **extract it directly into the Application Root** (not into a new
+     subfolder — see the warning above and `FIX-403-FORBIDDEN.md` if
+     unsure), **or**
    - **Deploy from GitHub** and connect the private repo
      `Amitsjoysm/omcomputers-web` (branch `main`) — this also lets Hostinger
      auto-redeploy whenever new code is pushed to that branch. You'll need to
