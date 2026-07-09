@@ -25,6 +25,15 @@ export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   integrations: [react()],
+  // Bind the standalone server to 0.0.0.0 (all interfaces), not just
+  // localhost. Hosting platforms (Hostinger, containers, reverse proxies)
+  // reach the app from outside its loopback interface, so a localhost-only
+  // bind makes the app unreachable and the deployment is marked failed even
+  // though the build succeeded and the process is running. `host: true`
+  // resolves to 0.0.0.0. A HOST env var, if the platform sets one, still
+  // overrides this at runtime. The runtime PORT is taken from the platform's
+  // PORT env var automatically.
+  server: { host: true },
   redirects: {
     '/prices': '/parts',
   },

@@ -120,7 +120,14 @@ will type to log in.
    | `ADMIN_SECRET` | the random string from Step 2 |
    | `NODE_ENV` | `production` |
    | `SITE_URL` | `https://your-domain.com` |
+   | `HOST` *(optional)* | `0.0.0.0` |
 
+   > `HOST` is optional — the app already binds to `0.0.0.0` by default (set
+   > in `astro.config.mjs`), so the platform's proxy can always reach it.
+   > Only add this variable if you ever see an "unreachable"/502 symptom
+   > despite a successful build. `PORT` is provided by Hostinger
+   > automatically — do **not** set it yourself.
+   >
    > `SITE_URL` only affects canonical/SEO URLs and is read at **build
    > time** (it sets Astro's `site`). Set it before the build runs so it
    > takes effect; if it's missing or malformed the build still succeeds
@@ -234,6 +241,21 @@ variable in hPanel and restart the app.
   `astro.config.mjs`) before assuming you need to match Hostinger's exact
   Node patch version — removing an unused dependency is usually simpler and
   more reliable than waiting for the host to update.
+
+### Build succeeds, but the deployment is marked failed / the app is "unreachable" / 502 with no obvious error
+- **Most common cause — the server was binding to `localhost` only.** A Node
+  app that listens on `127.0.0.1` works when tested from inside the server,
+  but the hosting platform reaches your app through a proxy from *outside*
+  that loopback interface — so it can't connect, and marks the deployment
+  failed even though the build succeeded and the process is running (the
+  logs show no error because the app itself didn't crash).
+  **This is already fixed in this project:** `astro.config.mjs` sets
+  `server: { host: true }`, so the built server binds to `0.0.0.0` (all
+  interfaces) and the platform's proxy can reach it. You don't need to do
+  anything — but if you ever see this symptom, confirm that setting is still
+  present, and as a belt-and-suspenders measure you can also add a
+  `HOST=0.0.0.0` environment variable (the platform's own `PORT`/`HOST`
+  values, if it sets them, always take precedence at runtime).
 
 ### Build logs show success, but the app still won't serve requests / "entry file not found" at runtime
 - **Cause 1 — Startup File / start command doesn't match the built path.**
