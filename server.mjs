@@ -1,14 +1,12 @@
 #!/usr/bin/env node
-// Root-level startup entrypoint for panel-based Node.js hosts (Hostinger, cPanel, Plesk).
+// Fallback startup entrypoint for generic panel-based Node.js hosts
+// (cPanel/Plesk "Node.js App" setups) that ask you to pick an
+// "Application Startup File" before the project has ever been built —
+// when dist/server/entry.mjs (the real Astro-built server) doesn't exist
+// yet, so a path under dist/ can't be selected or typed reliably.
 //
-// Why this file exists: the real Astro-built server lives at
-// dist/server/entry.mjs, but that path only exists *after* a build runs.
-// Many hosting panels ask you to pick an "Application Startup File" at the
-// time you first create the app — before any build has happened — so a
-// path under dist/ isn't selectable yet and has to be typed by hand, which
-// is easy to get wrong or leave stale. This file sits at the project root
-// so it's always present and discoverable, and simply boots the real
-// server once it exists.
-//
-// Point your host's "Application Startup File" at this file (server.mjs).
+// NOT used on Hostinger: Hostinger's Node.js hosting has an Astro-specific
+// preset that expects the Application Startup File to be
+// dist/server/entry.mjs directly — point it there instead, and ignore
+// this file entirely. See HOSTINGER-DEPLOYMENT.md for details.
 import './dist/server/entry.mjs';
