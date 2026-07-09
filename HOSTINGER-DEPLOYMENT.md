@@ -195,6 +195,19 @@ variable in hPanel and restart the app.
 
 ## Common errors & how to fix them
 
+### Build warning: "engine ... requires Node >=X.Y.Z" (e.g. a `sitemap` package)
+- **Cause:** a leftover/unused dependency somewhere in the tree declares a
+  narrower Node engine requirement than your hosting environment's exact
+  patch version (e.g. it wants `20.19.5` but the host runs `20.19.4`).
+- **Fix:** this build no longer carries that dependency — `@astrojs/sitemap`
+  was removed because the site already generates its own `/sitemap.xml`
+  directly (see `src/pages/sitemap.xml.ts`) and never needed the package.
+  If you see a similar warning again after adding a new dependency, check
+  whether it's actually used (`grep -r "package-name" src/` and
+  `astro.config.mjs`) before assuming you need to match Hostinger's exact
+  Node patch version — removing an unused dependency is usually simpler and
+  more reliable than waiting for the host to update.
+
 ### "Application failed to start" / the app won't boot
 - **Cause:** usually a missing or wrong environment variable, or the wrong start command.
 - **Fix:** In hPanel → your app → **Logs**, look for the first error line (usually near the top of the crash). Confirm:
