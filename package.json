@@ -2,11 +2,12 @@
   "name": "omcomputers-web",
   "version": "1.0.0",
   "description": "OM Computers production website — Astro + MySQL, self-hosted /admin panel",
+  "main": "server.mjs",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "start": "node ./dist/server/entry.mjs",
+    "start": "node server.mjs",
     "setup": "node scripts/favicons.mjs && npx astro sync",
     "astro": "astro"
   },

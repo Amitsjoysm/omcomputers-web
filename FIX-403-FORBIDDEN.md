@@ -71,7 +71,8 @@ generic 403.
 **Fix — in hPanel → Websites → your domain → Node.js:**
 1. Confirm **Application Root** points at the folder containing
    `package.json` (see #1).
-2. Confirm **Application Startup File** is set to `dist/server/entry.mjs`.
+2. Confirm **Application Startup File** is set to **`server.mjs`** (not a
+   path under `dist/` — see `HOSTINGER-DEPLOYMENT.md` for why).
 3. Click **NPM Install** (installs dependencies).
 4. Run the **Build** command: `npm run build`.
 5. Click **Restart** on the app.

@@ -99,6 +99,12 @@ will type to log in.
 3. Hostinger auto-detects **Astro**. Confirm these settings:
    - **Build command:** `npm run build`
    - **Start command:** `npm run start`
+   - **Application Startup File:** `server.mjs`
+     *(this is a small root-level file that boots the real build output at
+     `dist/server/entry.mjs` — it exists purely so the file is always
+     present and selectable in this field, even before the very first
+     build has run and created the `dist/` folder. Point Hostinger at
+     `server.mjs`, not at a path under `dist/`.)*
    - **Node.js version:** `20` or `22`
 4. Open the app's **Environment variables** section and add all of these:
 
@@ -207,6 +213,37 @@ variable in hPanel and restart the app.
   `astro.config.mjs`) before assuming you need to match Hostinger's exact
   Node patch version — removing an unused dependency is usually simpler and
   more reliable than waiting for the host to update.
+
+### Build logs show success, but the app still won't serve requests / "entry file not found" at runtime
+- **Cause 1 — Startup File points at a `dist/` path.** Some hosting panels
+  let you configure the app **before the first build has ever run**, when
+  `dist/` doesn't exist yet. If the Startup File field was typed as
+  `dist/server/entry.mjs` at that point, some panels never revalidate it
+  after a later successful build. **Fix:** set the Application Startup File
+  to **`server.mjs`** (a small root-level file included in this project
+  specifically for this reason — see Step 3). It always exists, so it's
+  never affected by build timing.
+- **Cause 2 — the app was never restarted after the build finished.** A
+  successful build does not always automatically restart the running
+  process. **Fix:** after any build (or after changing environment
+  variables, the startup file, or the Node version), always click
+  **Restart** explicitly and wait ~15–20 seconds before testing again.
+- **Cause 3 — the Application Root changed after a build already ran.**
+  This app's compiled server bakes the absolute path to its own static
+  assets at build time. If you change the Application Root folder (rename
+  it, move it, or re-point the app at a different path) *after* a build
+  has already produced a `dist/` folder, that old `dist/` now points at a
+  path that no longer matches — pages may load but CSS/JS/images can 404.
+  **Fix:** run the **Build** step again after any Application Root change,
+  so the paths get baked correctly for the new location.
+- **Never upload a `dist/` folder built on your own computer.** For the
+  same reason as Cause 3 — the build output embeds the exact filesystem
+  path of the machine and folder it was built on/in. A `dist/` built on
+  your PC will contain a path like `C:/Users/you/...` or
+  `/home/you/project/...` that does not exist on Hostinger's server, and
+  static assets will silently fail to load even though the page itself
+  renders. Always let **Hostinger's own Build step** produce `dist/` —
+  never build it locally and zip/upload it as a shortcut.
 
 ### "Application failed to start" / the app won't boot
 - **Cause:** usually a missing or wrong environment variable, or the wrong start command.
