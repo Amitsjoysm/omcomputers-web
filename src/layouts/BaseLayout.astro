@@ -14,7 +14,10 @@ const {
   ogImage = '/icons/og-image.jpg',
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site || 'https://omcomputers.co');
+// Canonical/absolute URLs derive from the site origin (set in
+// astro.config.mjs from SITE_URL, falling back to the production domain).
+const siteOrigin = (Astro.site ?? new URL('https://omcomputers.net')).origin;
+const canonical = new URL(Astro.url.pathname, siteOrigin);
 
 // Load site settings from the database
 const siteSettings = await getSettings();
@@ -35,7 +38,7 @@ const siteSettings = await getSettings();
   <meta property="og:type"        content="website" />
   <meta property="og:title"       content={`${title} · OM Computers`} />
   <meta property="og:description" content={description} />
-  <meta property="og:image"       content={new URL(ogImage, Astro.site || 'https://omcomputers.co')} />
+  <meta property="og:image"       content={new URL(ogImage, siteOrigin)} />
   <meta property="og:url"         content={canonical} />
   <meta name="twitter:card"       content="summary_large_image" />
 
@@ -70,8 +73,8 @@ const siteSettings = await getSettings();
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "OM Computers",
-    "url": "https://omcomputers.co",
-    "logo": "https://omcomputers.co/logo.png",
+    "url": siteOrigin,
+    "logo": `${siteOrigin}/logo.png`,
     "telephone": siteSettings.phone,
     "email": siteSettings.email,
     "address": {

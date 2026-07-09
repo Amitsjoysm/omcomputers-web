@@ -14,7 +14,7 @@ function resolveSite() {
       // ignore malformed value, use fallback below
     }
   }
-  return 'https://omcomputers.co';
+  return 'https://omcomputers.net';
 }
 
 // Deployed on Hostinger Business (Node.js web app).

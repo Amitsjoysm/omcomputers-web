@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { listPublishedPosts } from '../lib/content';
 
 export const GET: APIRoute = async ({ site }) => {
-  const base = site?.origin ?? 'https://omcomputers.co';
+  const base = site?.origin ?? 'https://omcomputers.net';
 
   const posts = await listPublishedPosts();
 

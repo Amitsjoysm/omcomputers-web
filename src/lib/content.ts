@@ -48,7 +48,7 @@ export interface PriceCategory {
 export const DEFAULT_SETTINGS: SiteSettings = {
   phone: '+91 98765 43210',
   whatsapp: '919876543210',
-  email: 'info@omcomputers.co',
+  email: 'info@omcomputers.net',
   address: 'Pune, Maharashtra',
   googleMaps: '',
   openHours: 'Monday to Saturday, 9 AM – 7 PM',
