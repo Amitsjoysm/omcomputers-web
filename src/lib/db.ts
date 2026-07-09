@@ -7,14 +7,19 @@ let initPromise: Promise<void> | null = null;
 
 function getPool(): mysql.Pool {
   if (!pool) {
+    // Some hosts expose MySQL only over a Unix socket (set DB_SOCKET to its
+    // path, e.g. /var/run/mysqld/mysqld.sock); otherwise connect over TCP.
+    const socket = env('DB_SOCKET');
     pool = mysql.createPool({
-      host: env('DB_HOST', '127.0.0.1'),
-      port: Number(env('DB_PORT', '3306')),
+      ...(socket
+        ? { socketPath: socket }
+        : { host: env('DB_HOST', '127.0.0.1'), port: Number(env('DB_PORT', '3306')) }),
       user: env('DB_USER'),
       password: env('DB_PASSWORD'),
       database: env('DB_NAME'),
       charset: 'utf8mb4',
       connectionLimit: 5,
+      connectTimeout: 15_000,
       // Hostinger MySQL closes idle connections; keep the pool honest.
       enableKeepAlive: true,
       keepAliveInitialDelay: 10_000,

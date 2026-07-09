@@ -135,7 +135,39 @@ will type to log in.
    > The other 7 variables are read at **runtime** on every request.
 
 5. Click **Deploy** and wait for the build to finish. On first start the app
-   creates the database tables and loads the starter content automatically.
+   creates the database tables and loads the starter content automatically —
+   **the first time it successfully connects to MySQL** (see the health
+   check below to confirm that connection).
+
+### Step 4.5 — Confirm the app is running and connected (do this first if anything seems off)
+
+Open **`https://your-domain.com/api/health`** in a browser. It returns a
+small JSON report — no login needed — that answers the two questions that
+cause almost every "it deployed but doesn't work" situation:
+
+- **Is the app actually running and reachable?** If the page loads at all,
+  the answer is yes (the process started and is bound correctly). If it does
+  *not* load, the app isn't running/reachable — recheck the Startup File
+  (`dist/server/entry.mjs`) and Restart.
+- **Did the environment variables arrive, and can it reach MySQL?** The JSON
+  shows `env` (which variables are set — values hidden for secrets, but the
+  DB host/port shown so you can spot a wrong host) and `database`
+  (`connected`, `tablesReady`, and a specific `error` + `hint` if it can't
+  connect).
+
+`"ok": true` with `"tablesReady": true` means everything works — the tables
+were just created. If `"ok": false`, read the `hint` — it names the exact
+fix. **The most common cause on Hostinger:** `DB_HOST=localhost` is wrong,
+because the database is a separate service. Use the **exact host** shown in
+**hPanel → Databases → your MySQL database** (it may be `127.0.0.1`, an
+internal hostname, or a socket path — if hPanel gives a socket, set
+`DB_SOCKET` to it instead of `DB_HOST`/`DB_PORT`).
+
+> **"I don't see any tables being created"** is always this: the app has not
+> yet made a *successful* MySQL connection. Tables are created on the first
+> successful connect. Fix the DB connection using `/api/health` above, then
+> reload it once — the tables appear immediately. (You can delete
+> `src/pages/api/health.ts` later if you don't want the endpoint public.)
 
 > **Why this build is hardened against common Hostinger failures:**
 > - `sharp` (image tool used only by the local favicon script) is an
