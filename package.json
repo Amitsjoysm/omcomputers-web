@@ -2,17 +2,18 @@
   "name": "omcomputers-web",
   "version": "1.0.0",
   "description": "OM Computers production website — Astro + MySQL, self-hosted /admin panel",
-  "main": "server.mjs",
+  "type": "module",
+  "main": "dist/server/entry.mjs",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "start": "node server.mjs",
+    "start": "node dist/server/entry.mjs",
     "setup": "node scripts/favicons.mjs && npx astro sync",
     "astro": "astro"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.3.0"
   },
   "dependencies": {
     "@astrojs/node": "^8.3.4",
@@ -27,7 +28,9 @@
   "devDependencies": {
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
-    "sharp": "^0.33.5",
     "typescript": "^5.6.3"
+  },
+  "optionalDependencies": {
+    "sharp": "^0.33.5"
   }
 }

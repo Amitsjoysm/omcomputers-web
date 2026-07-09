@@ -99,23 +99,14 @@ will type to log in.
 3. Hostinger auto-detects **Astro**. Confirm these settings:
    - **Build command:** `npm run build`
    - **Start command:** `npm run start`
+     *(this runs `node dist/server/entry.mjs` — see `package.json`)*
    - **Application Startup File:** **`dist/server/entry.mjs`**
-     *(Hostinger's Astro preset expects this exact path — it's the file
-     Astro's Node adapter generates on every build. It does not exist until
-     the first build runs, which is expected and fine: set the field to
-     this value regardless, run the build, then restart. See the note
-     below if you're on a different panel that can't accept a path under
-     `dist/` at initial setup.)*
+     *(this is the file Astro's Node adapter generates on every build, and
+     the exact path Hostinger's Astro preset expects. It does not exist
+     until the first build runs — that's expected: set the field to this
+     value regardless, let the build run, then restart. `package.json`'s
+     `main` and `start` script both point here too, so all three agree.)*
    - **Node.js version:** `20` or `22`
-
-   > This project also ships a `server.mjs` file at the project root as a
-   > fallback for hosting panels *without* an Astro-specific preset (generic
-   > cPanel/Plesk "Node.js App" setups, for example), where the Startup File
-   > field is configured before any build has run and can't be pointed at a
-   > `dist/` path yet. **On Hostinger specifically, use `dist/server/entry.mjs`**
-   > — Hostinger's own platform diagnostics expect it and don't recognize the
-   > wrapper. `server.mjs` does no harm either way and can be ignored on
-   > Hostinger.
 4. Open the app's **Environment variables** section and add all of these:
 
    | Name | Value |
@@ -130,8 +121,28 @@ will type to log in.
    | `NODE_ENV` | `production` |
    | `SITE_URL` | `https://your-domain.com` |
 
+   > `SITE_URL` only affects canonical/SEO URLs and is read at **build
+   > time** (it sets Astro's `site`). Set it before the build runs so it
+   > takes effect; if it's missing or malformed the build still succeeds
+   > and falls back to the default domain — it can never break the build.
+   > The other 7 variables are read at **runtime** on every request.
+
 5. Click **Deploy** and wait for the build to finish. On first start the app
    creates the database tables and loads the starter content automatically.
+
+> **Why this build is hardened against common Hostinger failures:**
+> - `sharp` (image tool used only by the local favicon script) is an
+>   `optionalDependency`, so even if its native Linux binary can't be
+>   fetched during `npm install`, the install and build still succeed —
+>   it's never needed at build or runtime (favicons are pre-generated in
+>   `public/icons/`).
+> - The build needs **no database and no environment variables** — pages
+>   are only rendered at request time, never during the build, so a build
+>   can't fail on a missing DB or unset variable.
+> - The build succeeds even with a **production-only** install
+>   (`npm install --omit=dev`); no devDependency is required to build.
+> - No unused dependencies with strict Node-version requirements remain, so
+>   there are **no engine-mismatch warnings**.
 
 ---
 
@@ -225,21 +236,16 @@ variable in hPanel and restart the app.
   more reliable than waiting for the host to update.
 
 ### Build logs show success, but the app still won't serve requests / "entry file not found" at runtime
-- **Cause 1 — Startup File field doesn't match Hostinger's expected path.**
-  On Hostinger specifically, the Application Startup File must be
-  **`dist/server/entry.mjs`** — that's what its Astro-specific platform
-  preset expects, and its own build/deploy diagnostics validate against it.
-  If the field was ever set to something else (including this project's
-  `server.mjs` fallback file, or a typo, or left on a stale default from
-  before a framework re-detection), Hostinger's panel will flag the entry
-  file as "not found" even though the build genuinely succeeded and the
-  file exists. **Fix:** open the app's settings in hPanel and set
-  Application Startup File to exactly `dist/server/entry.mjs`, save, then
-  redeploy/restart.
-  (This project also ships a root-level `server.mjs` for hosting panels
-  *without* an Astro-specific preset, where the field must be set before
-  any build has run. **Don't use it on Hostinger** — use
-  `dist/server/entry.mjs` there.)
+- **Cause 1 — Startup File / start command doesn't match the built path.**
+  The Application Startup File must be **`dist/server/entry.mjs`** — that's
+  what Astro's Node adapter generates and what Hostinger's Astro preset
+  expects. This project is already configured so all three agree:
+  `package.json` has `"main": "dist/server/entry.mjs"` and its `start`
+  script runs `node dist/server/entry.mjs`. If the panel's Startup File
+  field was ever left on a stale value (a typo, or a default from before
+  framework re-detection), Hostinger will flag the entry file as "not
+  found" even though the build succeeded. **Fix:** set Application Startup
+  File to exactly `dist/server/entry.mjs`, save, then redeploy/restart.
 - **Cause 2 — the app was never restarted after the build finished.** A
   successful build does not always automatically restart the running
   process. **Fix:** after any build (or after changing environment
