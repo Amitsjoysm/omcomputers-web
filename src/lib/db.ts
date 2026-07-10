@@ -84,7 +84,18 @@ const SCHEMA = [
 
 async function initDb(): Promise<void> {
   const p = getPool();
-  for (const stmt of SCHEMA) await p.query(stmt);
+
+  // Only issue CREATE TABLE for tables that don't already exist. On shared
+  // MySQL the DB user may lack CREATE/DDL privileges; if the tables were
+  // created manually (from schema.sql) this loop runs no DDL at all and the
+  // app works with INSERT/SELECT rights only.
+  const [existingRows] = await p.query<mysql.RowDataPacket[]>('SHOW TABLES');
+  const existing = new Set(existingRows.map(r => String(Object.values(r)[0])));
+  for (const stmt of SCHEMA) {
+    const table = stmt.match(/CREATE TABLE IF NOT EXISTS\s+(\w+)/i)?.[1];
+    if (table && existing.has(table)) continue; // already present — skip DDL
+    await p.query(stmt);
+  }
 
   // Seed only when empty — never overwrite admin edits.
   const [postRows] = await p.query<mysql.RowDataPacket[]>('SELECT COUNT(*) AS n FROM posts');

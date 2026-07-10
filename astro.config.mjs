@@ -17,23 +17,23 @@ function resolveSite() {
   return 'https://omcomputers.net';
 }
 
-// Deployed on Hostinger Business (Node.js web app).
+// Deployed on Hostinger Business (managed shared / CloudLinux + Passenger).
 // All pages are server-rendered so content edits made in the /admin panel
 // (stored in MySQL) appear on the site immediately — no rebuild needed.
+//
+// Middleware mode (not standalone): the built server (dist/server/entry.mjs)
+// exports a request handler instead of self-starting a server. The custom
+// root `server.mjs` wraps it — serving static files and listening on the
+// port OR Unix-socket path the host provides. This is what makes the app
+// compatible with Phusion Passenger (Hostinger shared hosting hands the app
+// a socket path, which the standalone server cannot consume) while staying
+// portable: static assets resolve relative to server.mjs at runtime, so a
+// pre-built dist/ can be uploaded and run from any directory.
 export default defineConfig({
   site: resolveSite(),
   output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  adapter: node({ mode: 'middleware' }),
   integrations: [react()],
-  // Bind the standalone server to 0.0.0.0 (all interfaces), not just
-  // localhost. Hosting platforms (Hostinger, containers, reverse proxies)
-  // reach the app from outside its loopback interface, so a localhost-only
-  // bind makes the app unreachable and the deployment is marked failed even
-  // though the build succeeded and the process is running. `host: true`
-  // resolves to 0.0.0.0. A HOST env var, if the platform sets one, still
-  // overrides this at runtime. The runtime PORT is taken from the platform's
-  // PORT env var automatically.
-  server: { host: true },
   redirects: {
     '/prices': '/parts',
   },
