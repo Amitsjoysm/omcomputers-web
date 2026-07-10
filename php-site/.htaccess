@@ -1,0 +1,52 @@
+# ── OM Computers — Apache config (clean URLs + security) ─────────────
+
+Options -Indexes
+DirectoryIndex index.php index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Serve existing files/directories as-is (assets, images, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Blog post: /blog/{slug}  →  blog/post.php?slug={slug}
+  RewriteRule ^blog/([A-Za-z0-9_-]+)/?$ blog/post.php?slug=$1 [L,QSA]
+
+  # Service page: /services/{slug}  →  services/index.php?s={slug}
+  RewriteRule ^services/([A-Za-z0-9_-]+)/?$ services/index.php?s=$1 [L,QSA]
+
+  # Old /prices → /parts
+  RewriteRule ^prices/?$ /parts/ [R=301,L]
+</IfModule>
+
+# Custom 404
+ErrorDocument 404 /404.php
+
+# Protect sensitive files
+<FilesMatch "^(config\.php|config\.local\.php|schema\.sql|composer\.(json|lock)|\.env.*)$">
+  Require all denied
+</FilesMatch>
+
+# Block direct access to the includes and seed directories
+RedirectMatch 404 ^/inc/.*$
+RedirectMatch 404 ^/seed/.*$
+
+# Long cache for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/x-icon "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

@@ -1,0 +1,33 @@
+{
+  "category": "Laptops",
+  "items": [
+    {
+      "name": "Lenovo IdeaPad Slim 3",
+      "brand": "Lenovo",
+      "specs": "Intel i3-12th Gen · 8 GB RAM · 512 GB SSD · 15.6\" FHD · Windows 11",
+      "price": 38000,
+      "inStock": true
+    },
+    {
+      "name": "HP Pavilion 15",
+      "brand": "HP",
+      "specs": "AMD Ryzen 5 · 8 GB RAM · 512 GB SSD · 15.6\" FHD · Windows 11",
+      "price": 42000,
+      "inStock": true
+    },
+    {
+      "name": "Dell Inspiron 15",
+      "brand": "Dell",
+      "specs": "Intel i5-12th Gen · 16 GB RAM · 512 GB SSD · 15.6\" FHD · Windows 11",
+      "price": 55000,
+      "inStock": true
+    },
+    {
+      "name": "ASUS VivoBook 16",
+      "brand": "ASUS",
+      "specs": "Intel i7-12th Gen · 16 GB RAM · 1 TB SSD · 16\" WUXGA · Windows 11",
+      "price": 68000,
+      "inStock": false
+    }
+  ]
+}

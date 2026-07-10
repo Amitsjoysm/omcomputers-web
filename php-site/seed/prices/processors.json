@@ -1,0 +1,33 @@
+{
+  "category": "Processors",
+  "items": [
+    {
+      "name": "Intel Core i5-13400F",
+      "brand": "Intel",
+      "specs": "10-Core · 2.5 GHz base · 4.6 GHz boost · LGA1700 socket · 65W TDP",
+      "price": 15500,
+      "inStock": true
+    },
+    {
+      "name": "Intel Core i7-13700K",
+      "brand": "Intel",
+      "specs": "16-Core · 3.4 GHz base · 5.4 GHz boost · LGA1700 socket · 125W TDP",
+      "price": 34000,
+      "inStock": true
+    },
+    {
+      "name": "AMD Ryzen 5 7600X",
+      "brand": "AMD",
+      "specs": "6-Core · 4.7 GHz base · 5.3 GHz boost · AM5 socket · 105W TDP",
+      "price": 21000,
+      "inStock": true
+    },
+    {
+      "name": "AMD Ryzen 7 7700X",
+      "brand": "AMD",
+      "specs": "8-Core · 4.5 GHz base · 5.4 GHz boost · AM5 socket · 105W TDP",
+      "price": 29500,
+      "inStock": false
+    }
+  ]
+}

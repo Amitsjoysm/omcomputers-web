@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /keystatic/
+Disallow: /keystatic
+
+Sitemap: https://omcomputers.co/sitemap.xml

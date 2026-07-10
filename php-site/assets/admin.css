@@ -1,0 +1,40 @@
+body.admin { background: var(--surface-2); min-height: 100vh; }
+.admin-topbar { background: var(--text-primary); position: sticky; top: 0; z-index: 50; }
+.admin-topbar-inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-5); min-height: 60px; display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap; }
+.admin-brand { display: flex; align-items: center; gap: var(--sp-2); color: #fff; font-family: var(--font-display); font-size: 15px; }
+.admin-brand img { border-radius: 6px; background: #fff; padding: 2px; }
+.admin-nav { display: flex; gap: var(--sp-1); flex: 1; flex-wrap: wrap; }
+.admin-nav-link { color: #A0AEC0; font-size: 14px; padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-sm); transition: color 150ms, background 150ms; }
+.admin-nav-link:hover { color: #fff; }
+.admin-nav-link.active { color: #fff; background: rgba(255,255,255,.12); }
+.admin-badge { display: inline-block; min-width: 18px; padding: 1px 6px; margin-left: 5px; border-radius: 99px; background: var(--primary); color: #fff; font-size: 11px; font-weight: 700; text-align: center; }
+.admin-actions { display: flex; align-items: center; gap: var(--sp-2); }
+.admin-logout { background: none; border: 1px solid rgba(255,255,255,.25); color: #CBD5E0; font-size: 13px; padding: 6px 14px; border-radius: var(--radius-sm); cursor: pointer; }
+.admin-logout:hover { border-color: #fff; color: #fff; }
+.admin-main { max-width: 1100px; margin: 0 auto; padding: var(--sp-6) var(--sp-5) var(--sp-8); }
+.admin-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-5); margin-bottom: var(--sp-5); }
+.admin-h1 { font-family: var(--font-display); font-size: 26px; font-weight: 800; margin-bottom: var(--sp-4); }
+.admin-h2 { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: var(--sp-3); }
+.field { margin-bottom: var(--sp-4); }
+.field label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--sp-1); }
+.field input[type=text], .field input[type=password], .field input[type=number], .field input[type=date],
+.field input[type=email], .field input[type=url], .field textarea, .field select {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-size: 14px; font-family: var(--font-body); color: var(--text-primary); background: var(--surface); }
+.field input:focus, .field textarea:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+.field textarea { resize: vertical; line-height: 1.6; }
+.field .hint { font-size: 12px; color: var(--text-muted); margin-top: var(--sp-1); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+.check { display: flex; align-items: center; gap: var(--sp-2); font-size: 14px; }
+.check input { width: 16px; height: 16px; accent-color: var(--primary); }
+.btn-danger { display: inline-block; background: none; border: 1px solid var(--danger); color: var(--danger); padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-danger:hover { background: var(--danger); color: #fff; }
+button.btn-primary, button.btn-outline { cursor: pointer; }
+.flash { padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); font-size: 14px; margin-bottom: var(--sp-4); }
+.flash-ok { background: #E8F8EF; color: #1A7A43; border: 1px solid #BDEBD2; }
+.flash-err { background: #FDECEC; color: #B42318; border: 1px solid #F5C6C6; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.admin-table th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); padding: var(--sp-2) var(--sp-3); border-bottom: 2px solid var(--border); }
+.admin-table td { padding: var(--sp-3); border-bottom: 1px solid var(--border); vertical-align: middle; }
+.admin-table tr:hover td { background: var(--surface-2); }
+@media (max-width: 760px) { .field-row { grid-template-columns: 1fr; } }

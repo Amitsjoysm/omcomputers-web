@@ -1,0 +1,33 @@
+{
+  "category": "Storage",
+  "items": [
+    {
+      "name": "Kingston A400 SSD",
+      "brand": "Kingston",
+      "specs": "480 GB · SATA III · 2.5\" · 500 MB/s Read · 450 MB/s Write",
+      "price": 3200,
+      "inStock": true
+    },
+    {
+      "name": "Samsung 870 EVO",
+      "brand": "Samsung",
+      "specs": "1 TB · SATA III · 2.5\" · 560 MB/s Read · 530 MB/s Write",
+      "price": 7500,
+      "inStock": true
+    },
+    {
+      "name": "WD Blue SN570 NVMe",
+      "brand": "Western Digital",
+      "specs": "1 TB · NVMe PCIe 3.0 · M.2 2280 · 3500 MB/s Read · 3000 MB/s Write",
+      "price": 6800,
+      "inStock": true
+    },
+    {
+      "name": "Seagate Barracuda HDD",
+      "brand": "Seagate",
+      "specs": "2 TB · SATA III · 3.5\" · 7200 RPM · 256 MB Cache",
+      "price": 4200,
+      "inStock": true
+    }
+  ]
+}
