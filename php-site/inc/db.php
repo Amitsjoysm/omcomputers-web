@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/../config.php';
 
-/** Returns a shared PDO connection, creating tables + seed data on first use. */
+/** Returns a shared PDO connection, creating tables + seed data on first use.
+ *  Throws PDOException if the database cannot be reached — callers that must
+ *  degrade gracefully should use db_try() / db_rows() / db_value() instead. */
 function db(): PDO {
     static $pdo = null;
     static $inited = false;
@@ -16,13 +18,47 @@ function db(): PDO {
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false,
+            // Connect timeout so an unreachable/misconfigured DB fails FAST
+            // instead of hanging every request until the worker times out.
+            PDO::ATTR_TIMEOUT            => 5,
         ]);
     }
     if (!$inited) {
         $inited = true;
-        init_db($pdo);
+        // A schema/seed failure (e.g. the DB user lacks CREATE rights) must
+        // NOT prevent returning a usable connection — reads on tables that
+        // already exist should still work. Record it for diagnostics.
+        try { init_db($pdo); }
+        catch (Throwable $e) { db_set_error('Schema init: ' . $e->getMessage()); }
     }
     return $pdo;
+}
+
+/** Like db() but returns null instead of throwing when the DB is unreachable. */
+function db_try(): ?PDO {
+    try { return db(); }
+    catch (Throwable $e) { db_set_error($e->getMessage()); return null; }
+}
+function db_set_error(string $m): void { $GLOBALS['__oms_db_error'] = $m; }
+function db_error(): ?string { return $GLOBALS['__oms_db_error'] ?? null; }
+/** True when a live connection can be made. Never throws. */
+function db_ok(): bool { return db_try() !== null; }
+
+/** Safe SELECT → rows. Never throws; returns [] and records the error on failure. */
+function db_rows(string $sql, array $params = []): array {
+    $pdo = db_try();
+    if (!$pdo) return [];
+    try { $st = $pdo->prepare($sql); $st->execute($params); return $st->fetchAll(); }
+    catch (Throwable $e) { db_set_error($e->getMessage()); return []; }
+}
+/** Safe SELECT → first row or null. */
+function db_row(string $sql, array $params = []): ?array { return db_rows($sql, $params)[0] ?? null; }
+/** Safe SELECT → first column of first row, or null. */
+function db_value(string $sql, array $params = []) {
+    $pdo = db_try();
+    if (!$pdo) return null;
+    try { $st = $pdo->prepare($sql); $st->execute($params); return $st->fetchColumn(); }
+    catch (Throwable $e) { db_set_error($e->getMessage()); return null; }
 }
 
 /** Creates any missing tables and seeds starter content once. */

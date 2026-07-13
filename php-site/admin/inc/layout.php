@@ -42,6 +42,13 @@ function admin_head(string $title, string $active = ''): void {
   </header>
   <main class="admin-main">
 <?php
+    if (!db_ok()) {
+        echo '<div class="flash flash-err" style="margin-bottom:var(--sp-5);">'
+           . '<strong>⚠ Cannot connect to the database.</strong> Content and saving are unavailable until this is fixed. '
+           . 'Check your database details in <code>config.local.php</code> (or hPanel → Databases), then reload. '
+           . 'Open <a href="/api/health.php" target="_blank" rel="noopener">/api/health.php</a> for the exact error.'
+           . '</div>';
+    }
 }
 
 function admin_foot(): void { ?>

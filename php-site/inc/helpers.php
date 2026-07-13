@@ -8,12 +8,8 @@ function e($v): string { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'
 function settings(): array {
     static $s = null;
     if ($s !== null) return $s;
-    try {
-        $row = db()->query('SELECT data FROM settings WHERE id=1')->fetchColumn();
-        $s = $row ? array_merge(default_settings(), json_decode($row, true) ?: []) : default_settings();
-    } catch (Throwable $ex) {
-        $s = default_settings();
-    }
+    $row = db_value('SELECT data FROM settings WHERE id=1'); // safe: null on failure
+    $s = $row ? array_merge(default_settings(), json_decode($row, true) ?: []) : default_settings();
     return $s;
 }
 
@@ -34,37 +30,31 @@ function tel_link(): string { return 'tel:' . preg_replace('/\s/', '', settings(
 function decode_tags($t): array { $a = json_decode((string)$t, true); return is_array($a) ? $a : []; }
 
 function published_posts(): array {
-    $rows = db()->query('SELECT id, slug, title, excerpt, tags, cover_image, body, publish_date
-                         FROM posts WHERE published=1 ORDER BY publish_date DESC, id DESC')->fetchAll();
+    $rows = db_rows('SELECT id, slug, title, excerpt, tags, cover_image, body, publish_date
+                     FROM posts WHERE published=1 ORDER BY publish_date DESC, id DESC');
     foreach ($rows as &$r) $r['tags'] = decode_tags($r['tags']);
     return $rows;
 }
 function all_posts(): array {
-    $rows = db()->query('SELECT id, slug, title, excerpt, tags, cover_image, body, published, publish_date
-                         FROM posts ORDER BY publish_date DESC, id DESC')->fetchAll();
+    $rows = db_rows('SELECT id, slug, title, excerpt, tags, cover_image, body, published, publish_date
+                     FROM posts ORDER BY publish_date DESC, id DESC');
     foreach ($rows as &$r) $r['tags'] = decode_tags($r['tags']);
     return $rows;
 }
 function post_by_slug(string $slug): ?array {
-    $st = db()->prepare('SELECT * FROM posts WHERE slug=? AND published=1 LIMIT 1');
-    $st->execute([$slug]);
-    $r = $st->fetch();
+    $r = db_row('SELECT * FROM posts WHERE slug=? AND published=1 LIMIT 1', [$slug]);
     if (!$r) return null;
     $r['tags'] = decode_tags($r['tags']);
     return $r;
 }
 function post_by_id(int $id): ?array {
-    $st = db()->prepare('SELECT * FROM posts WHERE id=? LIMIT 1');
-    $st->execute([$id]);
-    $r = $st->fetch();
+    $r = db_row('SELECT * FROM posts WHERE id=? LIMIT 1', [$id]);
     if (!$r) return null;
     $r['tags'] = decode_tags($r['tags']);
     return $r;
 }
 function slug_exists(string $slug, int $exclude = 0): bool {
-    $st = db()->prepare('SELECT id FROM posts WHERE slug=? AND id<>? LIMIT 1');
-    $st->execute([$slug, $exclude]);
-    return (bool)$st->fetch();
+    return db_row('SELECT id FROM posts WHERE slug=? AND id<>? LIMIT 1', [$slug, $exclude]) !== null;
 }
 function slugify(string $s): string {
     $s = strtolower(trim($s));
@@ -76,28 +66,22 @@ function slugify(string $s): string {
 
 // ── Prices ──────────────────────────────────────────────────────────
 function categories_with_items(): array {
-    $cats = db()->query('SELECT id, name FROM price_categories ORDER BY sort, name')->fetchAll();
-    $items = db()->query('SELECT id, category_id, name, brand, specs, price, in_stock, image
-                          FROM price_items ORDER BY sort, id')->fetchAll();
+    $cats = db_rows('SELECT id, name FROM price_categories ORDER BY sort, name');
+    $items = db_rows('SELECT id, category_id, name, brand, specs, price, in_stock, image
+                      FROM price_items ORDER BY sort, id');
     foreach ($cats as &$c) {
         $c['items'] = array_values(array_filter($items, fn($i) => (int)$i['category_id'] === (int)$c['id']));
     }
     return $cats;
 }
 function category_by_id(int $id): ?array {
-    $st = db()->prepare('SELECT id, name FROM price_categories WHERE id=? LIMIT 1');
-    $st->execute([$id]);
-    return $st->fetch() ?: null;
+    return db_row('SELECT id, name FROM price_categories WHERE id=? LIMIT 1', [$id]);
 }
 function items_for_category(int $id): array {
-    $st = db()->prepare('SELECT id, name, brand, specs, price, in_stock, image FROM price_items WHERE category_id=? ORDER BY sort, id');
-    $st->execute([$id]);
-    return $st->fetchAll();
+    return db_rows('SELECT id, name, brand, specs, price, in_stock, image FROM price_items WHERE category_id=? ORDER BY sort, id', [$id]);
 }
 function item_by_id(int $id): ?array {
-    $st = db()->prepare('SELECT * FROM price_items WHERE id=? LIMIT 1');
-    $st->execute([$id]);
-    return $st->fetch() ?: null;
+    return db_row('SELECT * FROM price_items WHERE id=? LIMIT 1', [$id]);
 }
 
 // ── Messages ────────────────────────────────────────────────────────
@@ -106,12 +90,11 @@ function create_message(string $name, string $phone, string $service, string $me
         ->execute([mb_substr($name,0,191), mb_substr($phone,0,60), mb_substr($service,0,120), mb_substr($message,0,5000)]);
 }
 function list_messages(): array {
-    return db()->query('SELECT id, name, phone, service, message, is_read, created_at
-                        FROM messages ORDER BY created_at DESC, id DESC LIMIT 500')->fetchAll();
+    return db_rows('SELECT id, name, phone, service, message, is_read, created_at
+                    FROM messages ORDER BY created_at DESC, id DESC LIMIT 500');
 }
 function unread_count(): int {
-    try { return (int) db()->query('SELECT COUNT(*) FROM messages WHERE is_read=0')->fetchColumn(); }
-    catch (Throwable $e) { return 0; }
+    return (int) (db_value('SELECT COUNT(*) FROM messages WHERE is_read=0') ?? 0);
 }
 
 // ── Images (stored in DB) ───────────────────────────────────────────
@@ -124,9 +107,7 @@ function save_image(string $filename, string $mime, string $data): int {
     return (int) db()->lastInsertId();
 }
 function get_image(int $id): ?array {
-    $st = db()->prepare('SELECT mime, data FROM images WHERE id=? LIMIT 1');
-    $st->execute([$id]);
-    return $st->fetch() ?: null;
+    return db_row('SELECT mime, data FROM images WHERE id=? LIMIT 1', [$id]);
 }
 
 /** Handle an uploaded image ($_FILES entry) → returns public URL or null. */

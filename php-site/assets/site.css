@@ -13,7 +13,14 @@
 .nav-cta { display: flex; align-items: center; gap: var(--sp-3); }
 .nav-phone { font-size: 13px; padding: 8px 14px; }
 @media (max-width: 960px) { .nav-links, .nav-phone, .nav-quote { display: none; } }
-.mobile-menu { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--border); background: #fff; }
+/* Mobile menu: hidden by default, revealed only when toggled open. Using a
+   class (not the [hidden] attribute) because an explicit display rule would
+   otherwise override [hidden] and render the menu permanently — the cause of
+   the "double navigation" bug. */
+.mobile-menu { display: none; flex-direction: column; gap: var(--sp-2); padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--border); background: #fff; }
+.mobile-menu.open { display: flex; }
+/* Never show the mobile menu on desktop, even if toggled. */
+@media (min-width: 961px) { .mobile-menu { display: none !important; } }
 .mobile-menu a { padding: var(--sp-3); border-radius: var(--radius-sm); font-weight: 600; color: var(--text-secondary); }
 .mobile-menu a:hover { background: var(--surface-2); }
 

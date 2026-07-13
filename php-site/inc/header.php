@@ -81,7 +81,7 @@ $services_menu = [
       </button>
     </div>
   </div>
-  <div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="mobile-menu" id="mobileMenu">
     <a href="/">Home</a>
     <a href="/services/device-repair">Services</a>
     <a href="/blog">Blog</a>

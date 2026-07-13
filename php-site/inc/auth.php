@@ -1,6 +1,14 @@
 <?php
 require_once __DIR__ . '/../config.php';
 
+function is_https(): bool {
+    if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') return true;
+    // Behind Hostinger's / a CDN's proxy, HTTPS is signalled via a header.
+    if (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') return true;
+    if (($_SERVER['SERVER_PORT'] ?? '') == 443) return true;
+    return false;
+}
+
 function admin_session_start(): void {
     if (session_status() === PHP_SESSION_NONE) {
         session_set_cookie_params([
@@ -8,7 +16,7 @@ function admin_session_start(): void {
             'path' => '/',
             'httponly' => true,
             'samesite' => 'Lax',
-            'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+            'secure' => is_https(),
         ]);
         session_name('oms_admin');
         session_start();

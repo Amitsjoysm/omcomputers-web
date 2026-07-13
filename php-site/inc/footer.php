@@ -66,14 +66,13 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.fade-up').forEach(function (el) { obs.observe(el); });
   })();
-  // Mobile menu
+  // Mobile menu — toggle the .open class (CSS controls visibility)
   (function () {
     var t = document.getElementById('navToggle'), m = document.getElementById('mobileMenu');
     if (!t || !m) return;
     t.addEventListener('click', function () {
-      var open = m.hasAttribute('hidden');
-      if (open) { m.removeAttribute('hidden'); t.setAttribute('aria-expanded','true'); }
-      else { m.setAttribute('hidden',''); t.setAttribute('aria-expanded','false'); }
+      var isOpen = m.classList.toggle('open');
+      t.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
   })();
 </script>

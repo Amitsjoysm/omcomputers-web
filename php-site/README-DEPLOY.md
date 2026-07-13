@@ -98,6 +98,27 @@ The admin URL is not linked anywhere on the public site — bookmark it.
 
 ---
 
+## Troubleshooting
+
+**Blog / Products / Admin show an empty page or a "Cannot connect to the
+database" banner** → the site is running fine, but it can't reach MySQL yet.
+The site no longer white-screens on a DB problem: public pages show their
+empty state and the admin shows a red banner instead. Fix the database
+details in `config.local.php` (they must exactly match hPanel → Databases),
+then reload. Open **`/api/health.php`** — it prints the exact reason
+(`Access denied` = wrong user/password, `Unknown database` = wrong name,
+etc.). Everything starts working the moment the connection succeeds.
+
+**The site looks unstyled / mobile menu doubled** → hard-refresh
+(`Ctrl+F5`) to clear cached CSS after uploading a new version.
+
+**A page shows "We'll be right back"** → an unexpected error was caught (you
+never get a raw error/stack trace). Set `APP_DEBUG=1` in the environment (or
+`define('APP_DEBUG','1')` in `config.local.php`) to see the real error while
+you diagnose, then turn it off again.
+
+---
+
 ## Why this fixes the Forbidden error
 
 The Node.js version needed Passenger, which on shared hosting is fragile and
