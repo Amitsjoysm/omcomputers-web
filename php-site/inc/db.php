@@ -161,8 +161,9 @@ function seed_if_empty(PDO $pdo): void {
 
 function default_settings(): array {
     return [
-        'phone' => '+91 98765 43210', 'whatsapp' => '919876543210',
-        'email' => 'info@omcomputers.net', 'address' => 'Pune, Maharashtra',
+        'phone' => '+91 98224 61023', 'whatsapp' => '919822461023',
+        'email' => 'info@omcomputers.net',
+        'address' => '12, Vaidyabaug chs, Kamat Ln, Alibag, Maharashtra 402201',
         'googleMaps' => '', 'openHours' => 'Monday to Saturday, 9 AM – 7 PM',
     ];
 }
