@@ -38,9 +38,17 @@ config.php           Configuration (edit, or use config.local.php)
 **hPanel → Databases → MySQL Databases** → create a database + user. Note the
 **database name, user, password, and host** (host is usually `localhost`).
 
-*(Optional)* If your DB user can't create tables, run **`schema.sql`** once in
-**phpMyAdmin** (select your DB → SQL tab → paste → Go). Otherwise the app
-creates the tables itself on first load.
+**Set up the tables + starter content (recommended):** open
+**phpMyAdmin** → select your database → **SQL** tab → paste the entire
+contents of **`install.sql`** → **Go**. This creates all 6 tables AND fills
+in the starter blog posts, price list, and your site/contact settings in one
+step. It's safe to re-run (it won't duplicate data).
+
+> Two SQL files are included: **`install.sql`** = tables **+** content (use
+> this). **`schema.sql`** = empty tables only (use only if you want the app
+> to seed the content itself on first load). You don't need both — pick
+> `install.sql`. If you skip SQL entirely, the app also creates the tables
+> and seeds content automatically on its first successful DB connection.
 
 ## Step 2 — Set your credentials
 
