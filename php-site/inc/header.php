@@ -5,15 +5,16 @@ $page_title = $page_title ?? 'OM Computers';
 $page_desc  = $page_desc  ?? 'OM Computers: Computer repair, CCTV, biometric, IT support, and digital services in Pune.';
 $canonical  = rtrim(SITE_URL, '/') . ($_SERVER['REQUEST_URI'] ?? '/');
 $og_image   = rtrim(SITE_URL, '/') . '/icons/og-image.jpg';
-$nav_active = $nav_active ?? '';
-$services_menu = [
-  ['/services/device-repair', 'Device Repair'],
-  ['/services/cctv-surveillance', 'CCTV & Surveillance'],
-  ['/services/biometric-access', 'Biometric & Access'],
-  ['/services/it-support-amc', 'IT Support & AMC'],
-  ['/services/web-digital', 'Web & Digital'],
-  ['/services/hardware-sales', 'Hardware Sales'],
+$telnum     = preg_replace('/\s/', '', $S['phone'] ?? '');
+$services = [
+  ['🖥️', 'Device Repair',           'Laptops · Desktops · Printers', '/services/device-repair'],
+  ['📡', 'CCTV & Surveillance',      'HD · IP · DVR/NVR Systems',      '/services/cctv-surveillance'],
+  ['🔐', 'Biometric & Access',        'Attendance · Entry Systems',      '/services/biometric-access'],
+  ['💻', 'IT Support & AMC',          'For Homes & Businesses',          '/services/it-support-amc'],
+  ['🌐', 'Web & Digital Services',   'Websites · SEO · Meta Ads',        '/services/web-digital'],
+  ['🔧', 'Hardware Sales',            'RAM · SSD · Accessories',          '/services/hardware-sales'],
 ];
+$nav_links = [ ['Blog','/blog'], ['Parts','/parts'], ['Contact','/contact'] ];
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,40 +55,64 @@ $services_menu = [
 <body>
 <a href="#main-content" class="skip-nav">Skip to main content</a>
 
-<header class="navbar">
-  <div class="container nav-inner">
-    <a href="/" class="nav-logo" aria-label="OM Computers home">
-      <img src="/logo.png" alt="OM Computers" width="52" height="52" />
-    </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="/"        class="nav-link<?= $nav_active==='home'?' active':'' ?>">Home</a>
-      <div class="nav-dropdown">
-        <a href="/services/device-repair" class="nav-link<?= $nav_active==='services'?' active':'' ?>">Services ▾</a>
-        <div class="nav-dropdown-menu">
-          <?php foreach ($services_menu as $s): ?>
-            <a href="<?= $s[0] ?>"><?= e($s[1]) ?></a>
-          <?php endforeach; ?>
-        </div>
+<nav class="navbar" id="main-nav" aria-label="Main navigation">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="OM Computers - Home">
+        <img src="/logo.png" alt="OM Computers" height="62" width="auto" />
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li class="nav-item">
+          <a href="/#services" class="nav-link" aria-haspopup="true">Services
+            <svg class="chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+          </a>
+          <div class="dropdown" role="menu">
+            <?php foreach ($services as $s): ?>
+            <a href="<?= $s[3] ?>" class="dropdown-item" role="menuitem">
+              <span class="dropdown-icon"><?= $s[0] ?></span>
+              <span><span class="dropdown-label"><?= e($s[1]) ?></span><span class="dropdown-sub"><?= e($s[2]) ?></span></span>
+            </a>
+            <?php endforeach; ?>
+          </div>
+        </li>
+        <?php foreach ($nav_links as $l): ?>
+          <li class="nav-item"><a href="<?= $l[1] ?>" class="nav-link"><?= e($l[0]) ?></a></li>
+        <?php endforeach; ?>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="tel:<?= e($telnum) ?>" class="btn-outline" style="font-size:13px; padding:8px 16px;">📞 Call Us</a>
+        <a href="/contact" class="btn-primary" style="font-size:13px; padding:8px 16px;">Get Quote</a>
+        <button class="mobile-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
       </div>
-      <a href="/blog"    class="nav-link<?= $nav_active==='blog'?' active':'' ?>">Blog</a>
-      <a href="/parts"   class="nav-link<?= $nav_active==='parts'?' active':'' ?>">Parts</a>
-      <a href="/contact" class="nav-link<?= $nav_active==='contact'?' active':'' ?>">Contact</a>
-    </nav>
-    <div class="nav-cta">
-      <a href="<?= e(tel_link()) ?>" class="btn-outline nav-phone">📞 <?= e($S['phone']) ?></a>
-      <a href="/contact" class="btn-primary nav-quote">Get Quote</a>
-      <button class="nav-hamburger" id="navToggle" aria-label="Open menu" aria-expanded="false">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
     </div>
   </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="/">Home</a>
-    <a href="/services/device-repair">Services</a>
-    <a href="/blog">Blog</a>
-    <a href="/parts">Parts</a>
-    <a href="/contact">Contact</a>
-    <a href="<?= e(wa_link('Hi OM Computers!')) ?>" class="btn-primary" style="justify-content:center;">💬 WhatsApp Us</a>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="backdrop" data-close></div>
+  <div class="mobile-panel">
+    <div class="mp-head">
+      <img src="/logo.png" alt="OM Computers" />
+      <button class="mp-close" data-close aria-label="Close menu">×</button>
+    </div>
+    <a href="/" class="mp-link">Home</a>
+    <div class="mp-section-label">Services</div>
+    <?php foreach ($services as $s): ?>
+      <a href="<?= $s[3] ?>" class="mp-service"><span class="ic"><?= $s[0] ?></span><span><span class="lbl"><?= e($s[1]) ?></span><br><span class="sub"><?= e($s[2]) ?></span></span></a>
+    <?php endforeach; ?>
+    <a href="/blog" class="mp-link">Blog</a>
+    <a href="/parts" class="mp-link">Parts</a>
+    <a href="/contact" class="mp-link">Contact</a>
+    <div class="mp-cta">
+      <a href="tel:<?= e($telnum) ?>" class="btn-outline" style="justify-content:center;">📞 <?= e($S['phone']) ?></a>
+      <a href="<?= e(wa_link('Hi OM Computers!')) ?>" target="_blank" rel="noopener" class="btn-primary" style="justify-content:center;">💬 WhatsApp Us</a>
+    </div>
   </div>
-</header>
+</div>
+
 <main id="main-content">

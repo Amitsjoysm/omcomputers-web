@@ -39,7 +39,7 @@ require __DIR__ . '/../inc/header.php';
 <article class="section">
   <div class="container">
     <?php if (!empty($post['cover_image'])): ?>
-      <img class="cover-img" src="<?= e($post['cover_image']) ?>" alt="<?= e($post['title']) ?>" />
+      <img class="cover-img-lg" src="<?= e($post['cover_image']) ?>" alt="<?= e($post['title']) ?>" />
     <?php endif; ?>
     <div style="max-width:72ch; margin:0 auto;">
       <div class="prose-om"><?= $html ?></div>
@@ -59,13 +59,13 @@ require __DIR__ . '/../inc/header.php';
     <h2 class="section-title" style="font-size:28px;">Related Posts</h2>
     <div class="grid-3">
       <?php foreach ($related as $p): ?>
-      <a href="/blog/<?= e($p['slug']) ?>" class="post-card">
-        <div class="cover"><?php if(!empty($p['cover_image'])): ?><img src="<?= e($p['cover_image']) ?>" alt="<?= e($p['title']) ?>" loading="lazy" /><?php else: ?><span class="ph">📝</span><?php endif; ?></div>
-        <div class="body">
+      <a href="/blog/<?= e($p['slug']) ?>" class="post-card" aria-label="Read: <?= e($p['title']) ?>">
+        <div class="cover-wrap"><?php if(!empty($p['cover_image'])): ?><img class="cover-img" src="<?= e($p['cover_image']) ?>" alt="<?= e($p['title']) ?>" loading="lazy" /><?php else: ?><span class="cover-placeholder">📝</span><?php endif; ?></div>
+        <div class="card-body">
           <div class="tag-row"><?php foreach (array_slice($p['tags'],0,3) as $t): ?><span class="badge badge-primary"><?= e($t) ?></span><?php endforeach; ?></div>
-          <h3><?= e($p['title']) ?></h3>
-          <p class="ex"><?= e($p['excerpt']) ?></p>
-          <div class="meta"><span>📅 <?= e(fmt_date($p['publish_date'])) ?></span><span>⏱ <?= read_time($p['body']) ?> min read</span></div>
+          <h3 class="card-title"><?= e($p['title']) ?></h3>
+          <p class="card-excerpt"><?= e($p['excerpt']) ?></p>
+          <div class="card-meta"><span>📅 <?= e(fmt_date($p['publish_date'])) ?></span><span>⏱ <?= read_time($p['body']) ?> min read</span></div>
         </div>
       </a>
       <?php endforeach; ?>

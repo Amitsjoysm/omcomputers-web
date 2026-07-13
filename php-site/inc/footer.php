@@ -66,14 +66,24 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.fade-up').forEach(function (el) { obs.observe(el); });
   })();
-  // Mobile menu — toggle the .open class (CSS controls visibility)
+  // Mobile drawer
   (function () {
-    var t = document.getElementById('navToggle'), m = document.getElementById('mobileMenu');
-    if (!t || !m) return;
-    t.addEventListener('click', function () {
-      var isOpen = m.classList.toggle('open');
-      t.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    });
+    var t = document.getElementById('navToggle'), d = document.getElementById('mobileDrawer');
+    if (!t || !d) return;
+    function open(){ d.classList.add('open'); t.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+    function close(){ d.classList.remove('open'); t.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    t.addEventListener('click', open);
+    d.querySelectorAll('[data-close]').forEach(function(el){ el.addEventListener('click', close); });
+    d.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', close); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+  })();
+  // Navbar scrolled state
+  (function () {
+    var nav = document.getElementById('main-nav');
+    if (!nav) return;
+    var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 60); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   })();
 </script>
 </body>

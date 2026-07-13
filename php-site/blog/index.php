@@ -32,16 +32,16 @@ require __DIR__ . '/../inc/header.php';
       </div>
       <div class="grid-3" id="postGrid">
         <?php foreach ($posts as $p): ?>
-        <a href="/blog/<?= e($p['slug']) ?>" class="post-card" data-tags="<?= e(strtolower(implode(',', $p['tags']))) ?>">
-          <div class="cover">
-            <?php if (!empty($p['cover_image'])): ?><img src="<?= e($p['cover_image']) ?>" alt="<?= e($p['title']) ?>" loading="lazy" />
-            <?php else: ?><span class="ph">📝</span><?php endif; ?>
+        <a href="/blog/<?= e($p['slug']) ?>" class="post-card" data-tags="<?= e(strtolower(implode(',', $p['tags']))) ?>" aria-label="Read: <?= e($p['title']) ?>">
+          <div class="cover-wrap">
+            <?php if (!empty($p['cover_image'])): ?><img class="cover-img" src="<?= e($p['cover_image']) ?>" alt="<?= e($p['title']) ?>" loading="lazy" />
+            <?php else: ?><span class="cover-placeholder">📝</span><?php endif; ?>
           </div>
-          <div class="body">
-            <div class="tag-row"><?php foreach (array_slice($p['tags'],0,3) as $t): ?><span class="badge badge-primary"><?= e($t) ?></span><?php endforeach; ?></div>
-            <h3><?= e($p['title']) ?></h3>
-            <p class="ex"><?= e($p['excerpt']) ?></p>
-            <div class="meta"><span>📅 <?= e(fmt_date($p['publish_date'])) ?></span><span>⏱ <?= read_time($p['body']) ?> min read</span></div>
+          <div class="card-body">
+            <div class="tag-row"><?php foreach (array_slice($p['tags'],0,3) as $t): ?><span class="badge badge-primary"><?= e($t) ?></span><?php endforeach; ?><?php if(count($p['tags'])>3): ?><span class="badge badge-muted">+<?= count($p['tags'])-3 ?> more</span><?php endif; ?></div>
+            <h3 class="card-title"><?= e($p['title']) ?></h3>
+            <p class="card-excerpt"><?= e($p['excerpt']) ?></p>
+            <div class="card-meta"><span>📅 <?= e(fmt_date($p['publish_date'])) ?></span><span>⏱ <?= read_time($p['body']) ?> min read</span></div>
           </div>
         </a>
         <?php endforeach; ?>
