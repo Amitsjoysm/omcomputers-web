@@ -14,29 +14,34 @@
 $__local = __DIR__ . '/config.local.php';
 if (is_file($__local)) require $__local;
 
+// Read a setting from (1) a constant already defined in config.local.php,
+// (2) an environment variable (getenv / $_SERVER / $_ENV — covers the ways
+// different hosts expose them), else (3) the default. So BOTH config.local.php
+// and hPanel environment variables work; config.local.php wins if both set.
 function cfg(string $key, string $default = ''): string {
-    $v = getenv($key);
-    if ($v !== false && $v !== '') return $v;
     if (defined($key)) return (string) constant($key);
+    $v = getenv($key);
+    if ($v === false || $v === '') $v = $_SERVER[$key] ?? ($_ENV[$key] ?? false);
+    if ($v !== false && $v !== '') return (string) $v;
     return $default;
 }
 
 // ── Database (MySQL) ────────────────────────────────────────────────
-// Set these to the values from hPanel → Databases → MySQL.
-if (!defined('DB_HOST'))     define('DB_HOST', 'localhost');
-if (!defined('DB_PORT'))     define('DB_PORT', '3306');
-if (!defined('DB_NAME'))     define('DB_NAME', 'omcomputers');
-if (!defined('DB_USER'))     define('DB_USER', 'root');
-if (!defined('DB_PASSWORD')) define('DB_PASSWORD', '');
-if (!defined('DB_SOCKET'))   define('DB_SOCKET', '');   // optional unix socket path
+// Set these via config.local.php OR as hPanel environment variables.
+if (!defined('DB_HOST'))     define('DB_HOST',     cfg('DB_HOST', 'localhost'));
+if (!defined('DB_PORT'))     define('DB_PORT',     cfg('DB_PORT', '3306'));
+if (!defined('DB_NAME'))     define('DB_NAME',     cfg('DB_NAME', 'omcomputers'));
+if (!defined('DB_USER'))     define('DB_USER',     cfg('DB_USER', 'root'));
+if (!defined('DB_PASSWORD')) define('DB_PASSWORD', cfg('DB_PASSWORD', ''));
+if (!defined('DB_SOCKET'))   define('DB_SOCKET',   cfg('DB_SOCKET', ''));   // optional unix socket path
 
 // ── Admin panel ─────────────────────────────────────────────────────
 // The password you type to log in at /admin/.
-if (!defined('ADMIN_PASSWORD')) define('ADMIN_PASSWORD', 'change-me-now');
+if (!defined('ADMIN_PASSWORD')) define('ADMIN_PASSWORD', cfg('ADMIN_PASSWORD', 'change-me-now'));
 
 // ── Site ────────────────────────────────────────────────────────────
-if (!defined('SITE_URL'))  define('SITE_URL',  'https://omcomputers.net');
-if (!defined('SITE_NAME')) define('SITE_NAME', 'OM Computers');
+if (!defined('SITE_URL'))  define('SITE_URL',  cfg('SITE_URL',  'https://omcomputers.net'));
+if (!defined('SITE_NAME')) define('SITE_NAME', cfg('SITE_NAME', 'OM Computers'));
 
 // Uploads directory (relative to this app root). Must be writable.
 if (!defined('UPLOAD_DIR'))  define('UPLOAD_DIR',  __DIR__ . '/uploads');
